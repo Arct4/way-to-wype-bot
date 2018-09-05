@@ -4,7 +4,10 @@ Little Discord Bot developed with [Node.js](https://nodejs.org/en/) and [Discord
 
 ## About Way to Wype
 
-Way to Wype is a French guild on Elune-EU Server.
+![Way to Wype Logo](/data/common/wtw_logo.png)
+
+[Way to Wype](http://eu.battle.net/wow/fr/guild/elune/Way_to_Wype/) is a French guild on Elune-EU Server.
+
 You send a private message to Arctarus#2334 to get more informations and an invite to our Discord server.
 
 ## Built With
