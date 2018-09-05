@@ -1,0 +1,4 @@
+data/raid-members/
+data/raid-calendar/
+node_modules/
+auth.json

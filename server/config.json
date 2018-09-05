@@ -1,0 +1,8 @@
+{
+  "loggerLevel": "debug",
+  "dataFolder": "./data",
+  "rosterFolder": "/raid-members",
+  "calendarFolder": "/raid-calendar",
+  "defaultRealm": "Elune",
+  "defaultRegion": "eu"
+}

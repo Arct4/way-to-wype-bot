@@ -1,0 +1,15 @@
+{
+  "name": "way-to-wype-bot",
+  "version": "0.0.1",
+  "description": "Bot for the Way to Wype guild, based on server Elune EU",
+  "main": "bot.js",
+  "author": "Arctarus",
+  "dependencies": {
+    "async": "^2.6.1",
+    "discord.io": "https://github.com/woor/discord.io/tarball/gateway_v6",
+    "find-in-files": "^0.5.0",
+    "lodash": "^4.17.10",
+    "moment": "^2.22.2",
+    "winston": "^3.0.0"
+  }
+}

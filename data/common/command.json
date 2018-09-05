@@ -1,0 +1,57 @@
+{
+  "raidStatusShow": {
+    "name": "raid-status-show",
+    "alias": "rss",
+    "tooltip": "Montre la liste des membres définis pour le roster raid de la guilde"
+  },
+  "raidStatusUpdate": {
+    "name": "raid-status-update",
+    "alias": "rsu",
+    "tooltip": "Met à jour la liste des membres définis pour le roster raid de la guilde"
+  },
+  "raidMemberAdd": {
+    "name": "raid-member-add",
+    "alias": "rma",
+    "tooltip": "Ajoute un membre au roster raid de la guilde.\nAccepte les formats 'name' ou 'name-realm'."
+  },
+  "raidMemberUpdate": {
+    "name": "raid-member-update",
+    "alias": "rmu",
+    "tooltip": "Met à jour les données du membre choisi."
+  },
+  "raidMemberRemove": {
+    "name": "raid-member-remove",
+    "alias": "rmr",
+    "tooltip": "Supprime un membre du roster raid de la guilde"
+  },
+  "raidMemberSetRole": {
+    "name": "raid-member-set-role",
+    "alias": "rmro",
+    "tooltip": "Défini le rôle (Tank, Heal ou Dps) d'un membre du roster raid de la guilde"
+  },
+  "raidMemberSetRealm": {
+    "name": "raid-member-set-realm",
+    "alias": "rmre",
+    "tooltip": "Défini le royaume (ex: Varimathras) d'un membre du roster raid de la guilde"
+  },
+  "raidMemberSetClass": {
+    "name": "raid-member-set-class",
+    "alias": "rmsc",
+    "tooltip": "Défini la classe (ex: Paladin) d'un membre du roster raid de la guilde"
+  },
+  "raidEventNext": {
+    "name": "raid-event-next",
+    "alias": "ren",
+    "tooltip": "Affiche le prochain raid prévu"
+  },
+  "raidEventMonth": {
+    "name": "raid-event-month",
+    "alias": "rem",
+    "tooltip": "Affiche les raids pour le mois en cours"
+  },
+  "raidEventForMonth": {
+    "name": "raid-event-for-month",
+    "alias": "refm",
+    "tooltip": "Affiche les raids pour le mois choisi en paramètre"
+  }
+}
