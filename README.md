@@ -2,7 +2,11 @@
 
 Little Discord Bot developed with [Node.js](https://nodejs.org/en/) and [Discord.io](https://github.com/izy521/discord.io) API for Way to Wype guild.
 
+[![NPM](https://img.shields.io/npm/v/discord.io.svg)](https://img.shields.io/npm/v/gh-badges.svg)
+
 ## About Way to Wype
+
+![Way to Wype Logo](wtw_logo.png)
 
 [Way to Wype](http://eu.battle.net/wow/fr/guild/elune/Way_to_Wype/) is a French guild on Elune-EU Server.
 
