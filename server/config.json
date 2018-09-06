@@ -4,5 +4,6 @@
   "rosterFolder": "/raid-members",
   "calendarFolder": "/raid-calendar",
   "defaultRealm": "Elune",
-  "defaultRegion": "eu"
+  "defaultRegion": "eu",
+  "defaultNotifyChannel": "dev_tests"
 }
