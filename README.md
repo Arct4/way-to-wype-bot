@@ -1,6 +1,6 @@
 # Project Title
 
-Little Discord Bot developed with [Node.js](https://nodejs.org/en/) and [Discord.io](https://github.com/izy521/discord.io) API for Way to Wype guild.
+Little Discord Bot developed with [Node.js](https://nodejs.org/en/) and [Discord.io API](https://github.com/izy521/discord.io) for Way to Wype guild.
 
 [![NPM](https://img.shields.io/npm/v/discord.io.svg)](https://img.shields.io/npm/v/gh-badges.svg)
 
@@ -42,7 +42,7 @@ See also the list of [contributors](https://github.com/Arct4/way-to-wype-bot/con
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## TODO List
 

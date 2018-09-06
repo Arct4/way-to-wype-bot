@@ -122,10 +122,10 @@ bot.on('message', function (user, userID, channelID, message, evt) {
       case command.raidEventNext.name:
       case command.raidEventNext.alias:
         raidCalendarFunctions.raidEventNext()
-          .then(result => {
+          .then(response => {
             bot.sendMessage({
               to: channelID,
-              message: result
+              message: response
             });
           });
       break;
@@ -133,20 +133,12 @@ bot.on('message', function (user, userID, channelID, message, evt) {
       case command.raidEventMonth.name:
       case command.raidEventMonth.alias:
         raidCalendarFunctions.raidEventMonth()
-          .then(result => {
+          .then(response => {
             bot.sendMessage({
               to: channelID,
-              message: result
+              message: response
             });
           });
-      break;
-      // !raidEventForMonth
-      case command.raidEventForMonth.name:
-      case command.raidEventForMonth.alias:
-        bot.sendMessage({
-          to: channelID,
-          message: raidCalendarFunctions.raidEventForMonth(args)
-        });
       break;
     }
   }
