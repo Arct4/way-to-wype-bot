@@ -46,7 +46,7 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## TODO List
 
-- [ ] Welcome message send in DM with custom message
+- [x] Welcome message send in DM with custom message
 - [ ] Calendar : See, Add, Update, Remove events from a list
 - [ ] Calendar : Send automatic message when an event occur in a day
 - [ ] Member : Add roster's members with a specific rank (like Guild Master or Roster)
@@ -54,4 +54,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 - [ ] Member : Get items, gems and enchants for a specific player
 - [ ] Member : Update Class and Role from Armory (no more need of commands like _raid-member-set-role_)
 - [ ] Guide : Found on Wowhead, Icy Veins or other site a guide for class or profession
-- [ ] Improvements : Send bot's answer with multipart messages to avoid Discord limit (2000 characters)
+- [ ] Improvement : Send bot's answer with multipart messages to avoid Discord limit (2000 characters)
+- [ ] Improvement : Let user set a custom prefix for command
+- [ ] Improvement : Add translation management

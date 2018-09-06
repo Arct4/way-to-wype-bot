@@ -5,6 +5,7 @@ const auth = require('./auth.json');
 
 // Modules import
 const command = require('./data/common/command');
+const welcome = require('./data/common/welcome.json');
 const config = require('./server/config.json');
 const raidMembersFunctions = require('./server/raid/raid-member');
 const raidCalendarFunctions = require('./server/raid/raid-calendar');
@@ -21,11 +22,13 @@ let bot = new Discord.Client({
   token: auth.token,
   autorun: true
 });
+
 bot.on('ready', function (evt) {
   logger.info('Connected');
   logger.info('Logged in as: ');
   logger.info(bot.username + ' - (' + bot.id + ')');
 });
+
 bot.on('message', function (user, userID, channelID, message, evt) {
   // Our bot needs to know if it will execute a command
   // It will listen for messages that will start with `!`
@@ -147,4 +150,12 @@ bot.on('message', function (user, userID, channelID, message, evt) {
       break;
     }
   }
+});
+
+bot.on('guildMemberAdd', function (member) { 
+  // Send a DM with welcome message to new user   
+  bot.sendMessage({ 
+    to: '' + member.id + '', 
+    message: welcome.message
+  }); 
 });
