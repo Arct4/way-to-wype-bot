@@ -280,6 +280,7 @@ let removePlayersFromRoster = function (playersName) {
   return msg;
 }
 
+// Use to update a specific player (command !raid-member-update)
 let updatePlayer = function (playerName) {
   return new Promise((resolve, reject) => {
     let path = config.dataFolder + config.rosterFolder + '/' + _.lowerCase(playerName) + '.json';
