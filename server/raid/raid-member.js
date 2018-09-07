@@ -6,6 +6,7 @@ const fs = require('fs');
 const config = require('../config.json');
 const commonFiles = require('../common/asyncFiles');
 const Player = require('../common/player');
+const enumClass = require('../../data/common/class.json');
 
 // Configure logger settings
 logger.level = config.loggerLevel;
@@ -174,13 +175,15 @@ let checkArmoryForRoster = function (bot, channelID) {
               message: `Mise à jour du joueur '${_.get(player, 'name')}' en cours.`
             });
 
-            player.getDataForPlayer('items')
-              .then(response => {
-                setPropertyForPlayerFromArmory(fullPath, player, response);
-              })
-              .catch(error => {
-                reject(error);
-              });
+            // Update items datas
+            player.getDataForPlayer('items,talents')
+            .then(response => {
+              setPropertyForPlayerFromArmory(fullPath, player, response);
+              resolve(`Le joueur ${player.name} a été mis à jour.`);              
+            })
+            .catch(error => {
+              reject(error);
+            });
           });
   
           resolve(response);
@@ -286,10 +289,11 @@ let updatePlayer = function (playerName) {
       let player = new Player();          
       player.setProperties = JSON.parse(rawdata);
 
-      player.getDataForPlayer('items')
+      // Update items datas
+      player.getDataForPlayer('items,talents')
         .then(response => {
           setPropertyForPlayerFromArmory(path, player, response);
-          resolve(`Le joueur ${player.name} a été mis à jour.`);
+          resolve(`Le joueur ${player.name} a été mis à jour.`); 
         })
         .catch(error => {
           reject(error);
@@ -372,8 +376,20 @@ let setPropertyForPlayerFromArmory = function (path, player, data) {
     if(_.get(data, 'items.finger1.appearance.enchantDisplayInfoId')) _.set(player, 'enchant.ring1', 'Oui');
     if(_.get(data, 'items.finger2.appearance.enchantDisplayInfoId')) _.set(player, 'enchant.ring2', 'Oui');
 
+    // Find class
+    let classPlayer = _.find(enumClass.classes, function(idClass) {
+      return _.get(data, 'class') === idClass.id;
+    })
+    if(_.get(classPlayer, 'name')) _.set(player, 'class', _.get(classPlayer, 'name'));
+
+    // Find active spec
+    let activeSpec = _.find(data.talents, function(spec) {
+      return _.get(spec, 'selected', false) === true;
+    })
+    if(_.get(activeSpec, 'spec.role')) _.set(player, 'role', _.upperFirst(_.toLower(_.get(activeSpec, 'spec.role'))));
+
     player.lastUpdate = lastArmoryUpdate;
-                
+    
     // update json file for player
     fs.writeFileSync(path, JSON.stringify(player, null, 2), function (err) {
       if (err) {
