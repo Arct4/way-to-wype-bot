@@ -53,5 +53,10 @@
     "name": "calendar-default-channel",
     "alias": "cdc",
     "tooltip": "Défini le canal par défaut à utiliser pour le rappel des raids"
+  },
+  "setPrefix": {
+    "name": "set-prefix",
+    "alias": "",
+    "tooltip": "Défini le prefix à utiliser pour répondre aux commandes"
   }
 }

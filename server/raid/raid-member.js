@@ -1,7 +1,6 @@
 const _ = require('lodash');
 const logger = require('winston');
 const fs = require('fs');
-// const moment = require('moment');
 
 const config = require('../config.json');
 const commonFiles = require('../common/asyncFiles');
@@ -12,7 +11,7 @@ const enumClass = require('../../data/common/class.json');
 logger.level = config.loggerLevel;
 
 const STRING_SEPARATOR = '|';
-const STRING_MAX_LENGTH = 92; //110;
+const STRING_MAX_LENGTH = 92;
 
 module.exports = {
   // use to answer to !raid-status command
@@ -113,8 +112,6 @@ let showRoster = function () {
                 playersList = _.orderBy(playersList, ['role', 'ilvlEquipped', 'class'], ['desc', 'desc', 'asc']);
 
                 _.forEach(playersList, function (player) {
-                  // let lastUpdate = moment(_.get(player, 'lastUpdate')).format('DD-MM-YYYY h:mm').toString();
-
                   content += STRING_SEPARATOR + ' ' + _.padEnd(player.name, 24) 
                     + STRING_SEPARATOR + ' ' + _.padEnd(player.class, 10) 
                     + STRING_SEPARATOR + ' ' + _.padEnd(player.role, 8) 
@@ -123,7 +120,6 @@ let showRoster = function () {
                     + STRING_SEPARATOR + _.pad(_.get(player, 'enchant.weapon', ''), 8) 
                     + STRING_SEPARATOR + _.pad(_.get(player, 'enchant.ring1', ''), 8) 
                     + STRING_SEPARATOR + _.pad(_.get(player, 'enchant.ring2', ''), 8) 
-                    // + STRING_SEPARATOR + _.pad(lastUpdate, 18) 
                     + STRING_SEPARATOR + '\n';
                 });
               }

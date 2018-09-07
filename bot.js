@@ -66,9 +66,12 @@ bot.on('ready', function (evt) {
 
 bot.on('message', function (user, userID, channelID, message, evt) {
   // Our bot needs to know if it will execute a command
-  // It will listen for messages that will start with `!`
-  if (message.substring(0, 1) == '!') {
-    let args = message.substring(1).split(' ');
+  // It will listen for messages that will start with `!` (default prefix) or a custom prefix set in config.json
+  if(_.isEqual(user, bot.username)) return; // Check if the message sender (user) is the bot, if yes, stop treatment.
+
+  let prefix = _.get(config, 'prefix.custom', _.get(config, 'prefix.default'));
+  if (_.startsWith(message, prefix)) {
+    let args = message.substring(_.size(prefix)).split(' ');
     let cmd = args[0];
     
     args = args.splice(1);
@@ -79,6 +82,16 @@ bot.on('message', function (user, userID, channelID, message, evt) {
             to: channelID,
             message: 'Pong !'
         });
+      break;
+      // !set-prefix
+      case command.setPrefix.name:
+        utils.setBotPrefix(args)
+          .then(response => {
+            bot.sendMessage({
+              to: channelID,
+              message: response
+            });
+          });
       break;
       // !raid-status-show
       case command.raidStatusShow.name:

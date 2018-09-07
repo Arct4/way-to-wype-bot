@@ -50,11 +50,10 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - [ ] Calendar : See, Add, Update, Remove events from a list
 - [x] Calendar : Send automatic message when an event occur in a day (_set a default channel to send message needed_)
 - [ ] Member : Add roster's members with a specific rank (like Guild Master or Roster)
-- [ ] Member : Add data about gems and enchants for roster's members
-- [ ] Member : Get items, gems and enchants for a specific player
+- [ ] Member : Add data about gems and enchants for roster's members or a specific player
 - [x] Member : Update Class and Role from Armory
 - [ ] Guide : Found on Wowhead, Icy Veins or other site a guide for class or profession
 - [ ] Improvement : Send bot's answer with multipart messages to avoid Discord limit (2000 characters)
-- [ ] Improvement : Let user set a custom prefix for command
+- [x] Improvement : Let user set a custom prefix for command
 - [ ] Improvement : Add translation management
 - [ ] Docs : add docs for each command available
