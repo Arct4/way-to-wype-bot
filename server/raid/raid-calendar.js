@@ -9,7 +9,7 @@ const config = require('../config.json');
 logger.level = config.loggerLevel;
 
 const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-const periods = { day: 'day', month: 'month'};
+const periods = { day: 'day', month: 'month', next: 'next' };
 
 module.exports = {
   // Get Next event
@@ -36,6 +36,42 @@ module.exports = {
           reject(error);
         });
     });
+  },
+
+  nextDateEvent: function() {
+    return new Promise((resolve, reject) => {
+      getEvents(periods.next)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+
+  setDefaultChannel: function(args) {
+    return new Promise((resolve, reject) => {
+      let path = './server/config.json';
+      if(fs.existsSync(path)) {
+        let rawdata = fs.readFileSync(path);
+        let config = JSON.parse(rawdata);
+        
+        if(!_.isEmpty(config)) {
+          _.set(config, 'defaultNotifyChannel', args[0]);
+
+          // update json file for player
+          fs.writeFileSync(path, JSON.stringify(config, null, 2), function (err) {
+            if (err) {
+              logger.error(err);
+              reject(err);
+            }
+          });
+
+          resolve(`Default channel set to ${args[0]}`);
+        }
+      }
+    });
   }
 }
 
@@ -55,15 +91,19 @@ let getEvents = function (period) {
       // if calendar exist, get next event in the current month
       let rawdata = fs.readFileSync(pathCurrentMonth);
       let calendar = JSON.parse(rawdata);
-      if(!_.isEmpty(calendar)) {
+      if(!_.isEmpty(calendar)) {        
         var events = listEvents(calendar, timestamp);
-        formattedEvent(events, period)
-          .then(result => { 
-            resolve(result);
-          })
-          .catch(error => {
-            reject(error);
-          });
+        if(_.isEqual(period, periods.next)) {
+          resolve(_.first(events));
+        } else {
+          formattedEvent(events, period)
+            .then(result => { 
+              resolve(result);
+            })
+            .catch(error => {
+              reject(error);
+            });
+        }
       }
     } else if (fs.existsSync(pathNextMonth)) {
       // else, get first event for next month
@@ -71,13 +111,17 @@ let getEvents = function (period) {
       let calendar = JSON.parse(rawdata);
       if(!_.isEmpty(calendar)) {
         var events = listEvents(calendar, timestamp);
-        formattedEvent(events, period)
-          .then(result => { 
-            resolve(result);
-          })
-          .catch(error => {
-            reject(error);
-          });
+        if(_.isEqual(period, periods.next)) {
+          resolve(_.first(events));
+        } else {
+          formattedEvent(events, period)
+            .then(result => { 
+              resolve(result);
+            })
+            .catch(error => {
+              reject(error);
+            });
+        }
       }
     } else {
       reject('No data found');

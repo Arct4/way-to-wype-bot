@@ -2,9 +2,10 @@
 const _ = require('lodash');
 const Discord = require('discord.io');
 const logger = require('winston');
-const auth = require('./auth.json');
+const moment = require('moment');
 
 // Modules import
+const auth = require('./auth.json');
 const command = require('./data/common/command');
 const welcome = require('./data/common/welcome.json');
 const utils = require('./server/utils/utils');
@@ -15,7 +16,7 @@ const raidCalendarFunctions = require('./server/raid/raid-calendar');
 // Const for interval message
 const START_DATE = '2018-09-06'; // Date used as the starting point for multi-hour intervals, must be YYYY-MM-DD format
 const START_HOUR = 9; // Hour of the day when the timer begins (0 is 12am, 23 is 11pm), used with START_DATE and INTERVAL_HOURS param
-const INTERVAL_HOURS = 8; // Trigger at an interval of every X hours
+const INTERVAL_HOURS = 1; // Trigger at an interval of every X hours
 const TARGET_MINUTE = 0; // Minute of the hour when the chest will refresh, 30 means 1:30, 2:30, etc.
 const OFFSET = 10; // Notification will warn that the target is X minutes away
 // Don't change any code below
@@ -43,17 +44,21 @@ bot.on('ready', function (evt) {
   // Set interval to send a reminder message for raid
   let raidChannel = utils.getRaidChannel(bot.channels);
   if (!_.isEmpty(raidChannel)) {
-    logger.info(`raidChannel not empty : ${raidChannel.name}`);
-
     setInterval(function() {
       var d = new Date();
       if(Math.floor((d.getTime() - START_TIME) / 3600000) % INTERVAL_HOURS > 0) return; // Return if hour is not the correct interval
       if(d.getMinutes() !== NOTIFY_MINUTE) return; // Return if current minute is not the notify minute
 
-      logger.info(`Notify launch !`);
-      raidCalendarFunctions.raidEventNext()
+      raidCalendarFunctions.nextDateEvent()
         .then(response => {
-          raidChannel.sendMessage(`@here Le prochain raid prévu est : ${response}`);
+          if(!_.isEmpty(response)) {
+            if(moment(response.begin).isSame(moment().valueOf(), 'day')) {
+              bot.sendMessage({
+                to: raidChannel.id,
+                message: `@here Un raid est prévu aujourd'hui : ${response}`
+              })
+            }
+          }
         });
     }, 60 * 1000); // Check every minute
   }
@@ -74,7 +79,7 @@ bot.on('message', function (user, userID, channelID, message, evt) {
             to: channelID,
             message: 'Pong !'
         });
-      break;            
+      break;
       // !raid-status-show
       case command.raidStatusShow.name:
       case command.raidStatusShow.alias:
@@ -159,10 +164,21 @@ bot.on('message', function (user, userID, channelID, message, evt) {
             });
           });
       break;
-      // !raidEventMonth
+      // !raid-event-month
       case command.raidEventMonth.name:
       case command.raidEventMonth.alias:
         raidCalendarFunctions.raidEventMonth()
+          .then(response => {
+            bot.sendMessage({
+              to: channelID,
+              message: response
+            });
+          });
+      break;
+      // !calendar-default-channel
+      case command.reminderEventChannel.name:
+      case command.reminderEventChannel.alias:
+        raidCalendarFunctions.setDefaultChannel(args)
           .then(response => {
             bot.sendMessage({
               to: channelID,

@@ -48,5 +48,10 @@
     "name": "raid-event-month",
     "alias": "rem",
     "tooltip": "Affiche les raids pour le mois en cours"
+  },
+  "reminderEventChannel": {
+    "name": "calendar-default-channel",
+    "alias": "cdc",
+    "tooltip": "Défini le canal par défaut à utiliser pour le rappel des raids"
   }
 }

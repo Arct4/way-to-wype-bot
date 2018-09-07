@@ -48,7 +48,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 - [x] Welcome message send in DM with custom message
 - [ ] Calendar : See, Add, Update, Remove events from a list
-- [ ] Calendar : Send automatic message when an event occur in a day
+- [x] Calendar : Send automatic message when an event occur in a day (_set a default channel to send message needed_)
 - [ ] Member : Add roster's members with a specific rank (like Guild Master or Roster)
 - [ ] Member : Add data about gems and enchants for roster's members
 - [ ] Member : Get items, gems and enchants for a specific player
