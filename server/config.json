@@ -9,5 +9,6 @@
   "prefix": {
     "default": "!",
     "custom": "!"
-  }
+  },
+  "defaultChannel": "dev_tests"
 }

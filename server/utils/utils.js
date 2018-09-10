@@ -2,9 +2,19 @@ const _ = require('lodash');
 const logger = require('winston');
 const fs = require('fs');
 
-const config = require('../config.json');
+const config = require('./server/config.json');
 
 module.exports = {
+  getAnswerChannel: function (channels) {
+    if(!_.isEmpty(config.defaultChannel)) {
+      return _.find(channels, function(channel) {
+        return channel.name === config.defaultChannel;
+      });
+    } else {
+      return '';
+    }
+  },
+
   getRaidChannel: function (channels) {
     if(!_.isEmpty(config.defaultNotifyChannel)) {
       return _.find(channels, function(channel) {
@@ -20,7 +30,7 @@ module.exports = {
       if(!_.isEmpty(arg)) {
         _.set(config, 'prefix.custom', arg[0]);
 
-        fs.writeFileSync('./server/utils/config.json', JSON.stringify(config, null, 2), function (err) {
+        fs.writeFileSync('./server/config.json', JSON.stringify(config, null, 2), function (err) {
           if (err) {
             logger.error(err);
             reject(err);
@@ -30,6 +40,25 @@ module.exports = {
         resolve('Préfixe customisé défini à : `' + arg[0] + '`');
       } else {
         reject('Impossible de définir le préfixe customisé.');
+      }
+    });
+  },
+
+  setBotDefaultChannel: function (arg) {
+    return new Promise((resolve, reject) => {
+      if(!_.isEmpty(arg)) {
+        _.set(config, 'defaultChannel', arg[0]);
+
+        fs.writeFileSync('./server/config.json', JSON.stringify(config, null, 2), function (err) {
+          if (err) {
+            logger.error(err);
+            reject(err);
+          }
+        });
+
+        resolve('Canal par défaut défini à : `' + arg[0] + '`');
+      } else {
+        reject('Impossible de définir le canal par défaut.');
       }
     });
   }
