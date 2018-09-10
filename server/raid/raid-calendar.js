@@ -93,17 +93,13 @@ let getEvents = function (period) {
       let calendar = JSON.parse(rawdata);
       if(!_.isEmpty(calendar)) {        
         var events = listEvents(calendar, timestamp);
-        if(_.isEqual(period, periods.next)) {
-          resolve(_.first(events));
-        } else {
-          formattedEvent(events, period)
-            .then(result => { 
-              resolve(result);
-            })
-            .catch(error => {
-              reject(error);
-            });
-        }
+        formattedEvent(events, period)
+          .then(result => { 
+            resolve(result);
+          })
+          .catch(error => {
+            reject(error);
+          });
       }
     } else if (fs.existsSync(pathNextMonth)) {
       // else, get first event for next month
@@ -111,17 +107,13 @@ let getEvents = function (period) {
       let calendar = JSON.parse(rawdata);
       if(!_.isEmpty(calendar)) {
         var events = listEvents(calendar, timestamp);
-        if(_.isEqual(period, periods.next)) {
-          resolve(_.first(events));
-        } else {
-          formattedEvent(events, period)
-            .then(result => { 
-              resolve(result);
-            })
-            .catch(error => {
-              reject(error);
-            });
-        }
+        formattedEvent(events, period)
+          .then(result => { 
+            resolve(result);
+          })
+          .catch(error => {
+            reject(error);
+          });
       }
     } else {
       reject('No data found');
@@ -142,7 +134,7 @@ let formattedEvent = function (events, period) {
   return new Promise((resolve, reject) => {
     let eventString = '';
 
-    if(_.isEqual(period, periods.day)) {
+    if(_.isEqual(period, periods.day) || _.isEqual(period, periods.next)) {
       eventString += '\n```\n'
         + _.padEnd(' Evènement', 14)+ _.get(events, '0.title', '') + '\n'
         + _.padEnd(' Jour', 14) + moment(_.get(events, '0.begin')).format('DD/MM/YYYY') + '\n'
