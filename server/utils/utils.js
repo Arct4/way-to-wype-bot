@@ -2,7 +2,7 @@ const _ = require('lodash');
 const logger = require('winston');
 const fs = require('fs');
 
-const config = require('./server/config.json');
+const config = require('../config.json');
 
 module.exports = {
   getAnswerChannel: function (channels) {
