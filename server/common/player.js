@@ -36,7 +36,7 @@ module.exports = class Player {
     this.enchant.weapon = _.get(data, 'enchant.weapon') || 'Non';
     this.enchant.ring1 = _.get(data, 'enchant.ring1') || 'Non';
     this.enchant.ring2 = _.get(data, 'enchant.ring2') || 'Non';
-    this.lastUpdate = data.lastUpdate || new Date().getTime();
+    this.lastUpdate = data.lastUpdate || 0;
   }
 
   getDataForPlayer(field) {
@@ -49,7 +49,7 @@ module.exports = class Player {
         let error;
   
         if (statusCode !== 200) {
-          error = new Error('Request Failed.\n' + `Status Code: ${statusCode}`)
+          error = new Error('Request Failed.\n' + `Status Code: ${statusCode} for path ${apiPath}`);
         } else if (!/^application\/json/.test(contentType)) {
           error = new Error('Invalid content-type.\n' + `Expected application/json but received ${contentType}`);
         }

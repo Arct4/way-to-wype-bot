@@ -16,9 +16,9 @@ const raidCalendarFunctions = require('./server/raid/raid-calendar');
 // Const for interval message
 const START_DATE = '2018-09-06'; // Date used as the starting point for multi-hour intervals, must be YYYY-MM-DD format
 const START_HOUR = 9; // Hour of the day when the timer begins (0 is 12am, 23 is 11pm), used with START_DATE and INTERVAL_HOURS param
-const INTERVAL_HOURS = 24; // Trigger at an interval of every X hours
+const INTERVAL_HOURS = 1; // Trigger at an interval of every X hours
 const TARGET_MINUTE = 0; // Minute of the hour when the chest will refresh, 30 means 1:30, 2:30, etc.
-const OFFSET = 10; // Notification will warn that the target is X minutes away
+const OFFSET = 0; // Notification will warn that the target is X minutes away
 // Don't change any code below
 const NOTIFY_MINUTE = (TARGET_MINUTE < OFFSET ? 60 : 0) + TARGET_MINUTE - OFFSET;
 const START_TIME = new Date(new Date(START_DATE).getTime() + new Date().getTimezoneOffset() * 60000 + START_HOUR * 3600000).getTime();
@@ -51,13 +51,13 @@ bot.on('ready', function (evt) {
 
       raidCalendarFunctions.nextDateEvent()
         .then(response => {
+          logger.info('get raidCalendarFunctions.nextDateEvent()');
           if(!_.isEmpty(response)) {
-            if(moment(response.begin).isSame(moment().valueOf(), 'day')) {
-              bot.sendMessage({
-                to: raidChannel.id,
-                message: `@here Un raid est prévu aujourd'hui : ${response}`
-              })
-            }
+            logger.info('radCalenderFunctions.nextDateEvent() : ' + response);
+            bot.sendMessage({
+              to: raidChannel.id,
+              message: `@here Un raid est prévu aujourd'hui : ${response}`
+            })
           }
         });
     }, 60 * 1000); // Check every minute

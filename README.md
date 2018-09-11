@@ -1,4 +1,4 @@
-# Project Title
+# Way to Wype Bot for Discord
 
 Little Discord Bot developed with [Node.js](https://nodejs.org/en/) and [Discord.io API](https://github.com/izy521/discord.io) for Way to Wype guild.
 
@@ -46,20 +46,20 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## TODO List
 
-* [x] Welcome message send in DM with custom message
 * Calendar
   * [ ] See, Add, Update, Remove events from a list
   * [x] Send automatic message when an event occur in a day (_set a default channel to send message needed_)
 * Member
-  * [ ] Add roster's members with a specific rank (like Guild Master or Roster)
-  * [ ] Add data about gems and enchants for roster's members or a specific player
   * [x] Update Class and Role from Armory
+  * [ ] Add roster's members with a specific rank (like Guild Master or Roster)
+  * [ ] Add data about gems and enchants for roster's members or a specific player  
 * Guide
   * [ ] Found on Wowhead, Icy Veins or other site a guide for class or profession
 * Improvement
+  * [x] Welcome message send in DM with custom message
   * [x] Set a default channel to answer
-  * [ ] Send bot's answer with multipart messages to avoid Discord limit (2000 characters)
   * [x] Let user set a custom prefix for command
+  * [ ] Send bot's answer with multipart messages to avoid Discord limit (2000 characters)
   * [ ] Add translation management
   * [ ] Use channels objects for default channel (*#my_channel*), not a string (*my_channel*)
 * Docs

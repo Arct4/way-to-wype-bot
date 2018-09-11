@@ -134,7 +134,16 @@ let formattedEvent = function (events, period) {
   return new Promise((resolve, reject) => {
     let eventString = '';
 
-    if(_.isEqual(period, periods.day) || _.isEqual(period, periods.next)) {
+    if(_.isEqual(period, periods.next)) {
+      if(moment(_.get(events, '0.begin')).isSame(moment().valueOf(), 'day')) {
+        eventString += '\n```\n'
+          + _.padEnd(' Evènement', 14)+ _.get(events, '0.title', '') + '\n'
+          + _.padEnd(' Jour', 14) + moment(_.get(events, '0.begin')).format('DD/MM/YYYY') + '\n'
+          + _.padEnd(' Début', 14) + moment(_.get(events, '0.begin')).format('HH:mm').toString() + '\n'
+          + _.padEnd(' Fin', 14) + moment(_.get(events, '0.end')).format('HH:mm').toString() + '\n'
+          + '```';
+      }
+    } else if(_.isEqual(period, periods.day)) {
       eventString += '\n```\n'
         + _.padEnd(' Evènement', 14)+ _.get(events, '0.title', '') + '\n'
         + _.padEnd(' Jour', 14) + moment(_.get(events, '0.begin')).format('DD/MM/YYYY') + '\n'
