@@ -131,11 +131,10 @@ bot.on('message', function (user, userID, channelID, message, evt) {
               }
               for (let index = 0; index < result.length; index++) {
                 if(manyMessages === true && index === 0) {
-                  msg = "<@!" + userID + "> Voici l'état des membres du raid : " + result[index];
+                  msg = "<@!" + userID + "> " + result[index];
                 } else {
                   msg = result[index];
                 }
-
                 bot.sendMessage({
                   to: channelID,
                   message: msg

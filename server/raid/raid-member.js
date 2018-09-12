@@ -1,6 +1,7 @@
 const _ = require('lodash');
 const logger = require('winston');
 const fs = require('fs');
+const moment = require('moment');
 
 const config = require('../config.json');
 const commonFiles = require('../common/asyncFiles');
@@ -11,7 +12,7 @@ const enumClass = require('../../data/common/class.json');
 logger.level = config.loggerLevel;
 
 const STRING_SEPARATOR = '|';
-const STRING_MAX_LENGTH = 92;
+const STRING_MAX_LENGTH = 111;
 const TEXT_MESSAGE_LIMIT = 2000;
 
 module.exports = {
@@ -96,6 +97,7 @@ let showRoster = function () {
       + STRING_SEPARATOR + _.pad('Arme', 8) 
       + STRING_SEPARATOR + _.pad('Anneau 1', 8) 
       + STRING_SEPARATOR + _.pad('Anneau 2', 8)
+      + STRING_SEPARATOR + _.pad('Mise à jour', 18)
       + STRING_SEPARATOR + '\n' 
       + STRING_SEPARATOR + _.pad('', STRING_MAX_LENGTH, '-') + STRING_SEPARATOR + '\n';
     let content = '';
@@ -117,6 +119,8 @@ let showRoster = function () {
                 playersList = _.orderBy(playersList, ['role', 'ilvlEquipped', 'class'], ['desc', 'desc', 'asc']);
 
                 _.forEach(playersList, function (player) {
+                  let lastUpdate = moment(_.get(player, 'lastUpdate', '')).format('DD-MM-YYYY HH:mm').toString();
+
                   message = STRING_SEPARATOR + ' ' + _.padEnd(player.name, 24) 
                     + STRING_SEPARATOR + ' ' + _.padEnd(player.class, 10) 
                     + STRING_SEPARATOR + ' ' + _.padEnd(player.role, 8) 
@@ -125,6 +129,7 @@ let showRoster = function () {
                     + STRING_SEPARATOR + _.pad(_.get(player, 'enchant.weapon', ''), 8) 
                     + STRING_SEPARATOR + _.pad(_.get(player, 'enchant.ring1', ''), 8) 
                     + STRING_SEPARATOR + _.pad(_.get(player, 'enchant.ring2', ''), 8) 
+                    + STRING_SEPARATOR + _.pad(lastUpdate, 18)
                     + STRING_SEPARATOR + '\n';
 
                   if((_.size(message) + sizeOfMessage) <= TEXT_MESSAGE_LIMIT) {                    
@@ -134,7 +139,7 @@ let showRoster = function () {
                     content = message;
                   }
 
-                  // Recalcul of message size
+                  // Update size of message
                   sizeOfMessage = _.size(header) + _.size(content) + _.size(footer);
                 });
 
