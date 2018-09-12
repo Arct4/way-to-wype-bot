@@ -21,7 +21,7 @@ module.exports = class Player {
     this.enchant.weapon = 'Non';
     this.enchant.ring1 = 'Non';
     this.enchant.ring2 = 'Non';
-    this.lastUpdate = new Date().getTime();
+    this.lastUpdate = 0;
   }
 
   set setProperties(data) {

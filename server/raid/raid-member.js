@@ -12,6 +12,7 @@ logger.level = config.loggerLevel;
 
 const STRING_SEPARATOR = '|';
 const STRING_MAX_LENGTH = 92;
+const TEXT_MESSAGE_LIMIT = 2000;
 
 module.exports = {
   // use to answer to !raid-status command
@@ -80,6 +81,11 @@ module.exports = {
 // Get all data from json files and give a preformatted text
 let showRoster = function () {
   return new Promise((resolve, reject) => {
+    let sizeOfMessage = 0;
+    let tabMessages = [];
+    let message = '';
+    let path = config.dataFolder + config.rosterFolder + '/';
+
     let header = '```css\n' 
       + STRING_SEPARATOR + _.pad('', STRING_MAX_LENGTH, '-') + STRING_SEPARATOR + '\n'  
       + STRING_SEPARATOR + ' ' + _.pad('Personnage', 24) 
@@ -90,14 +96,13 @@ let showRoster = function () {
       + STRING_SEPARATOR + _.pad('Arme', 8) 
       + STRING_SEPARATOR + _.pad('Anneau 1', 8) 
       + STRING_SEPARATOR + _.pad('Anneau 2', 8)
-      // + STRING_SEPARATOR + _.pad('Mise à jour', 18)
       + STRING_SEPARATOR + '\n' 
       + STRING_SEPARATOR + _.pad('', STRING_MAX_LENGTH, '-') + STRING_SEPARATOR + '\n';
     let content = '';
     let footer = STRING_SEPARATOR + _.pad('', STRING_MAX_LENGTH, '-') + STRING_SEPARATOR + '\n```';
 
-    let path = config.dataFolder + config.rosterFolder + '/';
-
+    // Get first size of text
+    sizeOfMessage = (_.size(header) + _.size(content) + _.size(footer));
     commonFiles.readdirAsync(path)
       .then(results => {
         if(!_.isEmpty(results)) {
@@ -112,7 +117,7 @@ let showRoster = function () {
                 playersList = _.orderBy(playersList, ['role', 'ilvlEquipped', 'class'], ['desc', 'desc', 'asc']);
 
                 _.forEach(playersList, function (player) {
-                  content += STRING_SEPARATOR + ' ' + _.padEnd(player.name, 24) 
+                  message = STRING_SEPARATOR + ' ' + _.padEnd(player.name, 24) 
                     + STRING_SEPARATOR + ' ' + _.padEnd(player.class, 10) 
                     + STRING_SEPARATOR + ' ' + _.padEnd(player.role, 8) 
                     + STRING_SEPARATOR + _.pad(player.ilvl, 8) 
@@ -121,10 +126,26 @@ let showRoster = function () {
                     + STRING_SEPARATOR + _.pad(_.get(player, 'enchant.ring1', ''), 8) 
                     + STRING_SEPARATOR + _.pad(_.get(player, 'enchant.ring2', ''), 8) 
                     + STRING_SEPARATOR + '\n';
+
+                  if((_.size(message) + sizeOfMessage) <= TEXT_MESSAGE_LIMIT) {                    
+                    content += message;
+                  } else {
+                    tabMessages.push(header + content + footer);                    
+                    content = message;
+                  }
+
+                  // Recalcul of message size
+                  sizeOfMessage = _.size(header) + _.size(content) + _.size(footer);
                 });
+
+                if(_.isEmpty(tabMessages) ||
+                    !_.isEmpty(content)) {
+                  // Full message is shorter than TEXT_MESSAGE_LIMIT, must add content after loop treatment
+                  tabMessages.push(header + content + footer);
+                }
               }
 
-              resolve(header + content + footer);
+              resolve(tabMessages);
             })
             .catch(error => {
               reject(error);

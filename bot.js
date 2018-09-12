@@ -123,10 +123,25 @@ bot.on('message', function (user, userID, channelID, message, evt) {
       case command.raidStatusShow.alias:
         raidMembersFunctions.raidStatus('show')
           .then(result => {
-            bot.sendMessage({
-              to: channelID,
-              message: "<@!" + userID + "> Voici le récapitulatif des membres du raid" + result
-            });
+            if(!_.isEmpty(result)) {
+              let msg = '';
+              let manyMessages = false;
+              if (result.length >= 1) {
+                manyMessages = true;
+              }
+              for (let index = 0; index < result.length; index++) {
+                if(manyMessages === true && index === 0) {
+                  msg = "<@!" + userID + "> Voici l'état des membres du raid : " + result[index];
+                } else {
+                  msg = result[index];
+                }
+
+                bot.sendMessage({
+                  to: channelID,
+                  message: msg
+                });
+              }
+            }
           }); 
       break;
       // !raid-status-update
