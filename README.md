@@ -59,7 +59,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
   * [x] Welcome message send in DM with custom message
   * [x] Set a default channel to answer
   * [x] Let user set a custom prefix for command
-  * [ ] Send bot's answer with multipart messages to avoid Discord limit (2000 characters)
+  * [x] Send bot's answer with multipart messages to avoid Discord limit (2000 characters)
   * [ ] Add translation management
   * [ ] Use channels objects for default channel (*#my_channel*), not a string (*my_channel*)
 * Docs
