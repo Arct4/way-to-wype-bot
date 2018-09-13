@@ -47,7 +47,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## TODO List
 
 * Calendar
-  * [ ] See, Add, Update, Remove events from a list
+  * [ ] See, Add, Update events from a list
   * [x] Send automatic message when an event occur in a day (_set a default channel to send message needed_)
 * Member
   * [x] Update Class and Role from Armory

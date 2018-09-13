@@ -1,0 +1,22 @@
+{
+  "eventDifficulty": [{
+    "id": 1,
+    "name": "Normal",
+    "alias": "NM"
+  },
+  {
+    "id": 2,
+    "name": "Héroïque",
+    "alias": "HM"
+  },
+  {
+    "id": 3,
+    "name": "Mythique",
+    "alias": "MM"
+  },
+  {
+    "id": 4,
+    "name": "Mythique+",
+    "alias": "MM+"
+  }]
+}

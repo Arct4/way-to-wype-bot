@@ -16,7 +16,7 @@ const raidCalendarFunctions = require('./server/raid/raid-calendar');
 // Const for interval message
 const START_DATE = '2018-09-06'; // Date used as the starting point for multi-hour intervals, must be YYYY-MM-DD format
 const START_HOUR = 9; // Hour of the day when the timer begins (0 is 12am, 23 is 11pm), used with START_DATE and INTERVAL_HOURS param
-const INTERVAL_HOURS = 1; // Trigger at an interval of every X hours
+const INTERVAL_HOURS = 24; // Trigger at an interval of every X hours
 const TARGET_MINUTE = 0; // Minute of the hour when the chest will refresh, 30 means 1:30, 2:30, etc.
 const OFFSET = 0; // Notification will warn that the target is X minutes away
 // Don't change any code below
@@ -96,7 +96,7 @@ bot.on('message', function (user, userID, channelID, message, evt) {
             to: channelID,
             message: 'Pong !'
         });
-      break;
+        break;
       // !set-prefix
       case command.setPrefix.name:
         utils.setBotPrefix(args)
@@ -106,7 +106,7 @@ bot.on('message', function (user, userID, channelID, message, evt) {
               message: response
             });
           });
-      break;
+        break;
       // !set-default-channel
       case command.setDefaultChannel.name:
       case command.setDefaultChannel.alias:
@@ -117,7 +117,7 @@ bot.on('message', function (user, userID, channelID, message, evt) {
               message: response
             });
           });
-      break;
+        break;
       // !raid-status-show
       case command.raidStatusShow.name:
       case command.raidStatusShow.alias:
@@ -142,7 +142,7 @@ bot.on('message', function (user, userID, channelID, message, evt) {
               }
             }
           }); 
-      break;
+        break;
       // !raid-status-update
       case command.raidStatusUpdate.name:
       case command.raidStatusUpdate.alias:              
@@ -153,7 +153,7 @@ bot.on('message', function (user, userID, channelID, message, evt) {
               message: '<@!' + userID + '> ' + response.message
             });
           }); 
-      break;
+        break;
       // !raid-member-add
       case command.raidMemberAdd.name:
       case command.raidMemberAdd.alias:
@@ -161,7 +161,7 @@ bot.on('message', function (user, userID, channelID, message, evt) {
           to: channelID,
           message: raidMembersFunctions.raidMembers('add', args)
         });
-      break;
+        break;
       // !raid-member-update
       case command.raidMemberUpdate.name:    
       case command.raidMemberUpdate.alias:
@@ -172,7 +172,7 @@ bot.on('message', function (user, userID, channelID, message, evt) {
               message: response
             });
           });
-      break;
+        break;
       // !raid-member-remove
       case command.raidMemberRemove.name:
       case command.raidMemberRemove.alias:
@@ -180,7 +180,7 @@ bot.on('message', function (user, userID, channelID, message, evt) {
           to: channelID,
           message: raidMembersFunctions.raidMembers('remove', args)
         });
-      break;
+        break;
       // !raid-member-set-role
       case command.raidMemberSetRole.name:
       case command.raidMemberSetRole.alias:
@@ -188,7 +188,7 @@ bot.on('message', function (user, userID, channelID, message, evt) {
           to: channelID,
           message: raidMembersFunctions.raidMembers('set-role', args)
         });
-      break;
+        break;
       // !raid-member-set-class
       case command.raidMemberSetClass.name:
       case command.raidMemberSetClass.alias:
@@ -196,7 +196,7 @@ bot.on('message', function (user, userID, channelID, message, evt) {
           to: channelID,
           message: raidMembersFunctions.raidMembers('set-class', args)
         });
-      break;
+        break;
       // !raid-member-set-realm
       case command.raidMemberSetRealm.name:
       case command.raidMemberSetRealm.alias:
@@ -204,7 +204,7 @@ bot.on('message', function (user, userID, channelID, message, evt) {
           to: channelID,
           message: raidMembersFunctions.raidMembers('set-realm', args)
         });
-      break;
+        break;
       // !raid-event-next
       case command.raidEventNext.name:
       case command.raidEventNext.alias:
@@ -215,7 +215,7 @@ bot.on('message', function (user, userID, channelID, message, evt) {
               message: `@here Un raid est prévu aujourd'hui ${response}`
             });
           });
-      break;
+        break;
       // !raid-event-month
       case command.raidEventMonth.name:
       case command.raidEventMonth.alias:
@@ -226,7 +226,7 @@ bot.on('message', function (user, userID, channelID, message, evt) {
               message: response
             });
           });
-      break;
+        break;
       // !calendar-default-channel
       case command.reminderEventChannel.name:
       case command.reminderEventChannel.alias:
@@ -237,7 +237,17 @@ bot.on('message', function (user, userID, channelID, message, evt) {
               message: response
             });
           });
-      break;
+        break;
+      case command.calendarGenerateMonthEvents.name:
+      case command.calendarGenerateMonthEvents.alias:
+        raidCalendarFunctions.generateEvents(args)
+          .then(response => {
+            bot.sendMessage({
+              to: channelID,
+              message: response
+            });
+          });
+        break;
     }
   }
 });

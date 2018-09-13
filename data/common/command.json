@@ -63,5 +63,10 @@
     "name": "set-default-channel",
     "alias": "sdc",
     "tooltip": "Défini le canal unique sur lequel le bot peut répondre (si aucun n'est défini, le bot répond sur tous les canaux d'un serveur discord)"
+  },
+  "calendarGenerateMonthEvents": {
+    "name": "calendar-month-event",
+    "alias": "cme",
+    "tooltip": "Génère le fichier json des évènements pour le mois passé en paramètre (mois en anglais atm)"
   }
 }

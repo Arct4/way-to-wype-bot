@@ -61,5 +61,27 @@ module.exports = {
         reject('Impossible de définir le canal par défaut.');
       }
     });
+  },
+
+  getDaysForMonth: function (date) {
+    let d = date || new Date();
+    let month = d.getMonth();
+    let day = d.getDay();
+    let days = [];
+
+    d.setDate(1);
+
+    // Get the first Monday in the month
+    while (d.getDay() !== day) {
+      d.setDate(d.getDate() + 1);
+    }
+
+    // Get all the other Mondays in the month
+    while (d.getMonth() === month) {
+      days.push(new Date(d.getTime()));
+      d.setDate(d.getDate() + 7);
+    }
+
+    return days;
   }
 }

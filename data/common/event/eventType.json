@@ -1,0 +1,14 @@
+{
+  "eventType": [{
+    "id": 1,
+    "name": "Donjon"
+  },
+  {
+    "id": 2,
+    "name": "Raid"
+  },
+  {
+    "id": 3,
+    "name": "HF"
+  }]
+}

@@ -10,5 +10,15 @@
     "default": "!",
     "custom": "!"
   },
-  "defaultChannel": "dev_tests"
+  "defaultChannel": "dev_tests",
+  "defaultEvents": {
+    "raid": {
+      "eventDay": [1,3,4],
+      "eventDifficulty": 1,
+      "eventType": 2,
+      "hourBegin": "21:15",
+      "hourEnd": "23:15",
+      "hourGroup": "21:00"
+    }
+  }
 }
