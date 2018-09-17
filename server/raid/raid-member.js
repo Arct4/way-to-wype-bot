@@ -12,7 +12,7 @@ const enumClass = require('../../data/common/class.json');
 logger.level = config.loggerLevel;
 
 const STRING_SEPARATOR = '|';
-const STRING_MAX_LENGTH = 111;
+const STRING_MAX_LENGTH = 106;
 const TEXT_MESSAGE_LIMIT = 2000;
 
 module.exports = {
@@ -89,12 +89,13 @@ let showRoster = function () {
 
     let header = '```css\n' 
       + STRING_SEPARATOR + _.pad('', STRING_MAX_LENGTH, '-') + STRING_SEPARATOR + '\n'  
-      + STRING_SEPARATOR + ' ' + _.pad('Personnage', 24) 
+      + STRING_SEPARATOR + ' ' + _.pad('Personnage', 16) 
       + STRING_SEPARATOR + ' ' + _.pad('Classe', 10) 
       + STRING_SEPARATOR + ' ' + _.pad('Role', 8) 
-      + STRING_SEPARATOR + _.pad('Ilvl', 8)
-      + STRING_SEPARATOR + _.pad('IlvlE', 8) 
-      + STRING_SEPARATOR + _.pad('Arme', 8) 
+      + STRING_SEPARATOR + _.pad('Ilvl', 6)
+      + STRING_SEPARATOR + _.pad('IlvlE', 8)
+      + STRING_SEPARATOR + _.pad('HoA', 6)
+      + STRING_SEPARATOR + _.pad('Arme', 6) 
       + STRING_SEPARATOR + _.pad('Anneau 1', 8) 
       + STRING_SEPARATOR + _.pad('Anneau 2', 8)
       + STRING_SEPARATOR + _.pad('Mise à jour', 18)
@@ -121,12 +122,13 @@ let showRoster = function () {
                 _.forEach(playersList, function (player) {
                   let lastUpdate = moment(_.get(player, 'lastUpdate', '')).format('DD-MM-YYYY HH:mm').toString();
 
-                  message = STRING_SEPARATOR + ' ' + _.padEnd(player.name, 24) 
-                    + STRING_SEPARATOR + ' ' + _.padEnd(player.class, 10) 
-                    + STRING_SEPARATOR + ' ' + _.padEnd(player.role, 8) 
-                    + STRING_SEPARATOR + _.pad(player.ilvl, 8) 
-                    + STRING_SEPARATOR + _.pad(player.ilvlEquipped, 8)
-                    + STRING_SEPARATOR + _.pad(_.get(player, 'enchant.weapon', ''), 8) 
+                  message = STRING_SEPARATOR + ' ' + _.padEnd(_.get(player, 'name', ''), 16) 
+                    + STRING_SEPARATOR + ' ' + _.padEnd(_.get(player, 'class', ''), 10) 
+                    + STRING_SEPARATOR + ' ' + _.padEnd(_.get(player, 'role', ''), 8) 
+                    + STRING_SEPARATOR + _.pad(_.get(player, 'ilvl', ''), 6) 
+                    + STRING_SEPARATOR + _.pad(_.get(player, 'ilvlEquipped', ''), 8)
+                    + STRING_SEPARATOR + _.pad(calculateNeckLevel(_.get(player, 'neck', '')), 6)
+                    + STRING_SEPARATOR + _.pad(_.get(player, 'enchant.weapon', ''), 6) 
                     + STRING_SEPARATOR + _.pad(_.get(player, 'enchant.ring1', ''), 8) 
                     + STRING_SEPARATOR + _.pad(_.get(player, 'enchant.ring2', ''), 8) 
                     + STRING_SEPARATOR + _.pad(lastUpdate, 18)
@@ -411,6 +413,13 @@ let setPropertyForPlayerFromArmory = function (path, player, data) {
     })
     if(_.get(activeSpec, 'spec.role')) _.set(player, 'role', _.upperFirst(_.toLower(_.get(activeSpec, 'spec.role'))));
 
+    // Find HoA level
+    if(_.get(data, 'items.neck.azeriteItem')) {
+      _.set(player, 'neck.level', _.get(data, 'items.neck.azeriteItem.azeriteLevel'));
+      _.set(player, 'neck.experience', _.get(data, 'items.neck.azeriteItem.azeriteExperience'));
+      _.set(player, 'neck.nextLevel', _.get(data, 'items.neck.azeriteItem.azeriteExperienceRemaining'));
+    }
+
     player.lastUpdate = lastArmoryUpdate;
     
     // update json file for player
@@ -421,5 +430,15 @@ let setPropertyForPlayerFromArmory = function (path, player, data) {
       }
     });
   }
+}
+
+let calculateNeckLevel = function (playerNeck) {
+  let level = _.get(playerNeck, 'level', 0);
+  let exp = _.get(playerNeck, 'experience', 0);
+  let needed = _.get(playerNeck, 'nextLevel', 0);
+
+  if(needed !== 0 && exp !== 0) {
+    return (level + (exp / needed)).toFixed(1);
+  } else return 0;
 }
 //#endregion
