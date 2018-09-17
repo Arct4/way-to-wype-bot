@@ -47,7 +47,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## TODO List
 
 * Calendar
-  * [ ] See, Add, Update events from a list
+  * [x] See events with `!raid-event-next` `!raid-event-month`
+  * [x] Add raids events for given month with `!calendar-month-event october` (_work with month in English atm_ and _need to add some default config in **config.json** file_)
+  * [ ] Update a specific event
   * [x] Send automatic message when an event occur in a day (_set a default channel to send message needed_)
 * Member
   * [x] Update Class and Role from Armory
@@ -62,5 +64,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
   * [x] Send bot's answer with multipart messages to avoid Discord limit (2000 characters)
   * [ ] Add translation management
   * [ ] Use channels objects for default channel (*#my_channel*), not a string (*my_channel*)
+  * [ ] Upgrade Calendar management
 * Docs
   * [ ] Add docs for each command available
