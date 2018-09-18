@@ -48,7 +48,14 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 * Calendar
   * [x] See events with `!raid-event-next` `!raid-event-month`
-  * [x] Add raids events for given month with `!calendar-month-event october` (_work with month in English atm_ and _need to add some default config in **config.json** file_)
+  * [x] Add raids events for given month with `!calendar-month-event raid october`
+    * _Work with some alias set in enum EventType.json_
+    * _Work with month in English atm_ 
+    * _Need to add some default config in **config.json** file_
+  * [x] Add dungeons events with `!calendar-month-event dungeon october`
+    * _Work with some alias set in enum EventType.json_
+  * [x] Add HFs events with `!calendar-month-event HF october`
+    * _Work with some alias set in enum EventType.json_
   * [ ] Update a specific event
   * [x] Send automatic message when an event occur in a day (_set a default channel to send message needed_)
 * Member
