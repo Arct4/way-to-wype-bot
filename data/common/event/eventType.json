@@ -1,14 +1,31 @@
 {
   "eventType": [{
     "id": 1,
-    "name": "Donjon"
+    "name": "Donjon",
+    "alias": [
+      "DJ",
+      "DJs",
+      "Donjons",
+      "Dungeon",
+      "Dungeons"
+    ]
   },
   {
     "id": 2,
-    "name": "Raid"
+    "name": "Raid",
+    "alias": [
+      "Raids"
+    ]
   },
   {
     "id": 3,
-    "name": "HF"
+    "name": "HF",
+    "alias": [
+      "HFs",
+      "Haut-Faits",
+      "Haut Faits",
+      "Achievment",
+      "Achievments"
+    ]
   }]
 }

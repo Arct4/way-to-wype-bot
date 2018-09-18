@@ -7,6 +7,7 @@ const config = require('../config.json');
 const utils = require('../utils/utils');
 
 const Event = require('../common/eventCalendar');
+const enumEventType = require('../../data/common/event/eventType.json');
 const enumEventDifficulty = require('../../data/common/event/eventDifficulty.json');
 
 // Configure logger settings
@@ -80,13 +81,27 @@ module.exports = {
 
   generateEvents: function (args) {
     return new Promise((resolve, reject) => {
-      generateEventForMonth(2, args[0])
-        .then(result => {
-          resolve(`Events created for month ${args[0]}`);
-        })
-        .catch(error => {
-          reject(error);
-        });     
+      let type = _.toLower(args[0]);
+      let month = args[1];
+
+      if(!_.isEmpty(type)) {
+        // Find type id in enum with given arg
+        let enumType = _.find(enumEventType.eventType, function (et) {
+          return (_.isEqual(_.toLower(et.name), type) || _.includes(_.toLower(et.alias), type));
+        });
+
+        if(!_.isEmpty(enumType)) {
+          generateEventForMonth(enumType.id, month)
+            .then(result => {
+              resolve(`Events created for month ${month}`);
+            })
+            .catch(error => {
+              reject(error);
+            });     
+        } else {
+          reject('Impossible to create events, type of event unknown. Check documentation for accepted format.');
+        }
+      }
     });
   }
 }
