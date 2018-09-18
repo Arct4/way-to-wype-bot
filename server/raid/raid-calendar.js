@@ -209,8 +209,14 @@ let generateEventForMonth = function (eventType, month) {
     let year = moment().year();
     let path = config.dataFolder + config.calendarFolder + '/' + year + '/' ;
     let fullPath = path + _.lowerFirst(month) + '.json';
+    let allEvents = [];
 
-    if(!fs.existsSync(fullPath)) {      
+    if(fs.existsSync(fullPath)) {
+      // Month already exist, just add or update event
+      allEvents = JSON.parse(fs.readFileSync(fullPath));      
+    }
+
+    // if(!fs.existsSync(fullPath)) {
       // New month, creating events and save to a new file
       // Get default value for eventType
       // Need to get default days for type (Dungeon, Raid or HF)
@@ -231,8 +237,7 @@ let generateEventForMonth = function (eventType, month) {
       });
 
       if(!_.isEmpty(allDays)) {
-        let allEvents = [];
-        _.forEach(allDays, function (days) {              
+        _.forEach(allDays, function (days) {      
           _.forEach(days, function (day) {
             // Get date from current day
             let momentDay = moment(day);
@@ -265,7 +270,14 @@ let generateEventForMonth = function (eventType, month) {
               millisecond: 0
             }).valueOf());
 
-            allEvents.push(eventCalendar);
+            // Add events to allEvents list if not exist
+            let existEvent = _.find(allEvents, function (event) {
+              return ((event.name === eventCalendar.name) && (event.begin === eventCalendar.begin) 
+                      && (event.end === eventCalendar.end) && (event.group == eventCalendar.group));
+            });
+            if(!existEvent) {
+              allEvents.push(eventCalendar);
+            }
           });
         });
 
@@ -281,8 +293,8 @@ let generateEventForMonth = function (eventType, month) {
 
         resolve('Events created');
       }
-    } else {
+    // } else {
       // Month need to be updated
-    }
+    // }
   });
 }
