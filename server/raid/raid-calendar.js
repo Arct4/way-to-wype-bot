@@ -12,6 +12,7 @@ const enumEventDifficulty = require('../../data/common/event/eventDifficulty.jso
 
 // Configure logger settings
 logger.level = config.loggerLevel;
+moment.locale('fr');
 
 const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 const periods = { day: 'day', month: 'month', next: 'next' };
@@ -155,9 +156,9 @@ let getEvents = function (period) {
 }
 
 let listEvents = function (calendar, timestamp) {
-  return _.filter(calendar, function(obj) {
+  return _.orderBy(_.filter(calendar, function(obj) {
     return timestamp <= obj.begin;
-  });
+  }), ['begin'], ['asc']);
 }
 
 // Generate response for all events found
@@ -206,8 +207,6 @@ let formattedEvent = function (events, period) {
 
 let generateEventForMonth = function (eventType, month) {
   return new Promise((resolve, reject) => {
-    moment.locale('fr');
-
     let year = moment().year();
     let path = config.dataFolder + config.calendarFolder + '/' + year + '/' ;
     let fullPath = path + _.lowerFirst(month) + '.json';
