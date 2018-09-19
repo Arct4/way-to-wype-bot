@@ -69,22 +69,22 @@ bot.on('message', function (user, userID, channelID, message, evt) {
   // It will listen for messages that will start with `!` (default prefix) or a custom prefix set in config.json
   if(_.isEqual(user, bot.username)) return; // Check if the message sender (user) is the bot, if yes, stop treatment.
 
-  // Check if command is launch on setup channel
-  // If no default channel, bot can answer to command on any channel
-  // If one default channel set, get this id and compare with channelID params
-  if(!_.isEmpty(config.defaultChannel)) {
-    let defChannel = utils.getAnswerChannel(bot.channels);
-    if(!_.isEmpty(defChannel) && defChannel.id !== channelID) {
-      bot.sendMessage({ 
-        to: channelID, 
-        message: `Les commandes ne peuvent fonctionner que sur le canal '${config.defaultChannel}'`
-      });
-      return;
-    }
-  }
-
   let prefix = _.get(config, 'prefix.custom', _.get(config, 'prefix.default'));
   if (_.startsWith(message, prefix)) {
+    // Check if command is launch on setup channel
+    // If no default channel, bot can answer to command on any channel
+    // If one default channel set, get this id and compare with channelID params
+    if(!_.isEmpty(config.defaultChannel)) {
+      let defChannel = utils.getAnswerChannel(bot.channels);
+      if(!_.isEmpty(defChannel) && defChannel.id !== channelID) {
+        bot.sendMessage({ 
+          to: channelID, 
+          message: `Les commandes ne peuvent fonctionner que sur le canal '${config.defaultChannel}'`
+        });
+        return;
+      }
+    }
+  
     let args = message.substring(_.size(prefix)).split(' ');
     let cmd = args[0];
     
