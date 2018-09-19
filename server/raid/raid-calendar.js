@@ -197,8 +197,10 @@ let formattedEvent = function (events, period) {
       }
       fieldsDate.push({ name: 'Rappel', value: '_Pensez à répondre à l\'invitation en jeu si cela n\'est pas déjà fait_' });
 
-      let embedMessage = {};
+      let embedMessage = {};      
       _.set(embedMessage, 'color', 0x93c502);
+      _.set(embedMessage, 'author.name', 'Way to Wype');
+      _.set(embedMessage, 'author.icon_url', 'https://github.com/Arct4/way-to-wype-bot/raw/master/wtw_logo.png')
       _.set(embedMessage, 'thumbnail.url', 'https://wow.zamimg.com/images/wow/icons/large/achievement_nazmir_zone.jpg');
       _.set(embedMessage, 'title', _.get(events, '0.title', ''));
       _.set(embedMessage, 'url', '');

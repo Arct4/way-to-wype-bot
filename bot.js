@@ -257,6 +257,27 @@ bot.on('guildMemberAdd', function (member) {
   // Send a DM with welcome message to new user   
   bot.sendMessage({ 
     to: '' + member.id + '', 
-    message: welcome.message
+    embed: {
+      color: 0x93c502,
+      author: {
+        name: bot.username,
+        icon_url: "https://github.com/Arct4/way-to-wype-bot/raw/master/wtw_logo.png"
+      },
+      title: "Bienvenue sur le serveur Discord de la guilde Way to Wype !",
+      description: "Ce serveur est utilisé par la guilde Way to Wype officiant sur le serveur Elune (FR) de World of Warcraft",
+      fields: [{
+        name: "Raid",
+        value: "Si vous avez rejoint le serveur pour un raid PU, connectez-vous directement sur le canal vocal 'Raid'.\nLe vocal est actuellement en mute automatique."
+      },
+      {
+        name: "Recrutement",
+        value: "Notre recrutement est actuellement ouvert pour toutes les classes, nous recherchons en priorité des Heals et des DPS.\nN'hésitez pas à nous contacter pour de plus amples informations."
+      }],
+      timestamp: new Date(),
+      footer: {
+        icon_url: "https://github.com/Arct4/way-to-wype-bot/raw/master/wtw_logo.png",
+        text: "Généré automatiquement par " + bot.username
+      }
+    }
   }); 
 });
