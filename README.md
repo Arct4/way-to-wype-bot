@@ -70,7 +70,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
   * [x] Let user set a custom prefix for command
   * [x] Send bot's answer with multipart messages to avoid Discord limit (2000 characters)
   * [ ] Add translation management
-  * [ ] Use channels objects for default channel (*#my_channel*), not a string (*my_channel*)
+  * [x] Use channels objects for default channel (*#my_channel*), not a string (*my_channel*)
   * [ ] Upgrade Calendar management
 * Docs
   * [ ] Add docs for each command available

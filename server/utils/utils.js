@@ -8,7 +8,7 @@ module.exports = {
   getAnswerChannel: function (channels) {
     if(!_.isEmpty(config.defaultChannel)) {
       return _.find(channels, function(channel) {
-        return channel.name === config.defaultChannel;
+        return channel.id === config.defaultChannel;
       });
     } else {
       return '';
@@ -47,7 +47,8 @@ module.exports = {
   setBotDefaultChannel: function (arg) {
     return new Promise((resolve, reject) => {
       if(!_.isEmpty(arg)) {
-        _.set(config, 'defaultChannel', arg[0]);
+        let idChannel = arg[0].substr(2, _.size(arg[0]) - 3);
+        _.set(config, 'defaultChannel', idChannel);
 
         fs.writeFileSync('./server/config.json', JSON.stringify(config, null, 2), function (err) {
           if (err) {
@@ -56,7 +57,7 @@ module.exports = {
           }
         });
 
-        resolve('Canal par défaut défini à : `' + arg[0] + '`');
+        resolve('Canal par défaut défini à : <#' + idChannel + '>');
       } else {
         reject('Impossible de définir le canal par défaut.');
       }
