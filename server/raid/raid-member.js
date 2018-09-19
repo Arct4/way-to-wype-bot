@@ -398,8 +398,11 @@ let setPropertyForPlayerFromArmory = function (path, player, data) {
     player.ilvlEquipped = _.get(data, 'items.averageItemLevelEquipped', 0);
 
     if(_.get(data, 'items.mainHand.appearance.enchantDisplayInfoId')) _.set(player, 'enchant.weapon', 'Oui');
+    else _.set(player, 'enchant.weapon', 'Non');
     if(_.get(data, 'items.finger1.appearance.enchantDisplayInfoId')) _.set(player, 'enchant.ring1', 'Oui');
+    else _.set(player, 'enchant.ring1', 'Non');
     if(_.get(data, 'items.finger2.appearance.enchantDisplayInfoId')) _.set(player, 'enchant.ring2', 'Oui');
+    else _.set(player, 'enchant.ring2', 'Non');
 
     // Find class
     let classPlayer = _.find(enumClass.classes, function(idClass) {

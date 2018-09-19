@@ -48,6 +48,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 * Calendar
   * [x] See events with `!raid-event-next` `!raid-event-month`
+    * [x] `!raid-event-next` return an embed message
   * [x] Add raids events for given month with `!calendar-month-event raid october`
     * _Work with some alias set in enum EventType.json_
     * _Work with month in English atm_ 
@@ -56,7 +57,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
     * _Work with some alias set in enum EventType.json_
   * [x] Add HFs events with `!calendar-month-event HF october`
     * _Work with some alias set in enum EventType.json_
-  * [ ] Update a specific event
   * [x] Send automatic message when an event occur in a day (_set a default channel to send message needed_)
 * Member
   * [x] Update Class and Role from Armory
@@ -68,9 +68,11 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
   * [x] Welcome message send in DM with custom message
   * [x] Set a default channel to answer
   * [x] Let user set a custom prefix for command
-  * [x] Send bot's answer with multipart messages to avoid Discord limit (2000 characters)
-  * [ ] Add translation management
+  * [x] Send bot's answer with multipart messages to avoid Discord limit (2000 characters)  
   * [x] Use channels objects for default channel (*#my_channel*), not a string (*my_channel*)
+  * [ ] Add translation management
   * [ ] Upgrade Calendar management
+    * [ ] Edit specific event
+    * [ ] Add icon's url for an event (*to identify the event like Uldir or TD or AD for example*)
 * Docs
   * [ ] Add docs for each command available

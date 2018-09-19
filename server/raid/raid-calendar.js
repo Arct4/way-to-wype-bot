@@ -169,25 +169,7 @@ let formattedEvent = function (events, period) {
   return new Promise((resolve, reject) => {
     let eventString = '';
 
-    if(_.isEqual(period, periods.next)) {
-      if(moment(_.get(events, '0.begin')).isSame(moment().valueOf(), 'day')) {
-        eventString += '\n```\n'
-          + _.padEnd(' Evènement', 14)+ _.get(events, '0.title', '') + '\n'
-          + _.padEnd(' Jour', 14) + moment(_.get(events, '0.begin')).format('DD/MM/YYYY') + '\n'
-          + _.padEnd(' Début', 14) + moment(_.get(events, '0.begin')).format('HH:mm').toString() + '\n'
-          + _.padEnd(' Fin', 14) + moment(_.get(events, '0.end')).format('HH:mm').toString() + '\n'
-          + _.padEnd(' Groupage', 14) + moment(_.get(events, '0.group')).format('HH:mm').toString() + '\n'
-          + '```';
-      }
-    } else if(_.isEqual(period, periods.day)) {
-      eventString += '\n```\n'
-        + _.padEnd(' Evènement', 14)+ _.get(events, '0.title', '') + '\n'
-        + _.padEnd(' Jour', 14) + moment(_.get(events, '0.begin')).format('DD/MM/YYYY') + '\n'
-        + _.padEnd(' Début', 14) + moment(_.get(events, '0.begin')).format('HH:mm').toString() + '\n'
-        + _.padEnd(' Fin', 14) + moment(_.get(events, '0.end')).format('HH:mm').toString() + '\n'
-        + _.padEnd(' Groupage', 14) + moment(_.get(events, '0.group')).format('HH:mm').toString() + '\n'
-        + '```';
-    } else if(_.isEqual(period, periods.month)) {
+    if (_.isEqual(period, periods.month)) {
       events = _.orderBy(events, ['begin'], ['asc']);
       _.forEach(events, function (event) {      
         eventString += '\n```\n'
@@ -199,7 +181,31 @@ let formattedEvent = function (events, period) {
           + '```';
       });
     } else {
-      reject('No entry available');
+      let fieldsDate = [];
+      if (_.isEqual(period, periods.next)) {
+        if(moment(_.get(events, '0.begin')).isSame(moment().valueOf(), 'day')) {
+          fieldsDate.push({ name: 'Jour', value: moment(_.get(events, '0.begin')).format('DD/MM/YYYY') });
+          fieldsDate.push({ name: 'Début', value: moment(_.get(events, '0.begin')).format('HH:mm').toString(), inline: true });
+          fieldsDate.push({ name: 'Fin', value: moment(_.get(events, '0.end')).format('HH:mm').toString(), inline: true });
+          fieldsDate.push({ name: 'Groupage', value: moment(_.get(events, '0.group')).format('HH:mm').toString() });
+        }
+      } else if (_.isEqual(period, periods.day)) {
+        fieldsDate.push({ name: 'Jour', value: moment(_.get(events, '0.begin')).format('DD/MM/YYYY') });
+        fieldsDate.push({ name: 'Début', value: moment(_.get(events, '0.begin')).format('HH:mm').toString(), inline: true });
+        fieldsDate.push({ name: 'Fin', value: moment(_.get(events, '0.end')).format('HH:mm').toString(), inline: true });
+        fieldsDate.push({ name: 'Groupage', value: moment(_.get(events, '0.group')).format('HH:mm').toString(), });
+      }
+      fieldsDate.push({ name: 'Rappel', value: '_Pensez à répondre à l\'invitation en jeu si cela n\'est pas déjà fait_' });
+
+      let embedMessage = {};
+      _.set(embedMessage, 'color', 0x93c502);
+      _.set(embedMessage, 'thumbnail.url', 'https://wow.zamimg.com/images/wow/icons/large/achievement_nazmir_zone.jpg');
+      _.set(embedMessage, 'title', _.get(events, '0.title', ''));
+      _.set(embedMessage, 'url', '');
+      _.set(embedMessage, 'fields', fieldsDate);
+      _.set(embedMessage, 'footer.text', '');
+
+      eventString = embedMessage;
     }
 
     resolve(eventString);

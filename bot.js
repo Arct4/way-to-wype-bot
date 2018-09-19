@@ -212,7 +212,8 @@ bot.on('message', function (user, userID, channelID, message, evt) {
           .then(response => {
             bot.sendMessage({
               to: channelID,
-              message: `@here Un raid est prévu aujourd'hui ${response}`
+              message: `Le prochain évènement à avoir lieu est le suivant : `,
+              embed: response
             });
           });
         break;
