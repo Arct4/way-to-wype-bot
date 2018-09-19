@@ -18,7 +18,7 @@ module.exports = {
   getRaidChannel: function (channels) {
     if(!_.isEmpty(config.defaultNotifyChannel)) {
       return _.find(channels, function(channel) {
-        return channel.name === config.defaultNotifyChannel;
+        return channel.id === config.defaultNotifyChannel;
       });
     } else {
       return '';

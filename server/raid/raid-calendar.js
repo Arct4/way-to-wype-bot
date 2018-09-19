@@ -65,7 +65,8 @@ module.exports = {
         let config = JSON.parse(rawdata);
         
         if(!_.isEmpty(config)) {
-          _.set(config, 'defaultNotifyChannel', args[0]);
+          let idChannel = args[0].substr(2, _.size(args[0]) - 3);
+          _.set(config, 'defaultNotifyChannel', idChannel);
 
           // update json file for player
           fs.writeFileSync(path, JSON.stringify(config, null, 2), function (err) {
@@ -75,7 +76,7 @@ module.exports = {
             }
           });
 
-          resolve(`Default channel set to ${args[0]}`);
+          resolve('Default channel set to <#' + idChannel + '>');
         }
       }
     });
