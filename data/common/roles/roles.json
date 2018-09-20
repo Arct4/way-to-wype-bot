@@ -1,0 +1,40 @@
+[
+  {
+    "id": "492308846585577472",
+    "name": "newTestRole_2",
+    "embed": {
+      "author": {
+        "icon_url": "https://github.com/Arct4/way-to-wype-bot/raw/master/wtw_logo.png"
+      },
+      "title": "Nouveau rôle affecté à votre compte Discord",
+      "description": "Vous venez d'être promu avec le rôle 'newTestRole_2'. Voici les nouveaux accès que vous avez obtenu.",
+      "fields": [{
+        "name": "Raid",
+        "value": "Si vous avez rejoint le serveur pour un raid PU, connectez-vous directement sur le canal vocal 'Raid'.\n_Le vocal est actuellement en mute automatique._"
+      }],
+      "footer": {
+        "icon_url": "https://github.com/Arct4/way-to-wype-bot/raw/master/wtw_logo.png",
+        "text": "Généré automatiquement par "
+      }
+    }
+  },
+  {
+    "id": "492308800515211264",
+    "name": "newTestRole_1",
+    "embed": {
+      "author": {
+        "icon_url": "https://github.com/Arct4/way-to-wype-bot/raw/master/wtw_logo.png"
+      },
+      "title": "Nouveau rôle affecté à votre compte Discord",
+      "description": "Vous venez d'être promu avec le rôle 'newTestRole_1'. Voici les nouveaux accès que vous avez obtenu.",
+      "fields": [{
+        "name": "Recrutement",
+        "value": "Notre recrutement est actuellement ouvert pour toutes les classes, nous recherchons en priorité des Heals et des DPS.\n_N'hésitez pas à nous contacter pour de plus amples informations._"
+      }],
+      "footer": {
+        "icon_url": "https://github.com/Arct4/way-to-wype-bot/raw/master/wtw_logo.png",
+        "text": "Généré automatiquement par "
+      }
+    }
+  }
+]

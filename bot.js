@@ -6,10 +6,11 @@ const moment = require('moment');
 
 // Modules import
 const auth = require('./auth.json');
-const command = require('./data/common/command');
+const command = require('./data/common/command.json');
 const welcome = require('./data/common/welcome.json');
-const utils = require('./server/utils/utils');
+const roles = require('./data/common/roles/roles.json');
 const config = require('./server/config.json');
+const utils = require('./server/utils/utils');
 const raidMembersFunctions = require('./server/raid/raid-member');
 const raidCalendarFunctions = require('./server/raid/raid-calendar');
 
@@ -281,4 +282,53 @@ bot.on('guildMemberAdd', function (member) {
       }
     }
   }); 
+});
+
+// Generate and send a DM to describe new roles for the user
+// @param {array} memberOldRoles List of all roles define for the updated user, before discord role update
+// @param {array} memberNewRoles List of all roles define for the updated user, after discord role update
+// @param {object} user User updated
+bot.on('guildMemberUpdate', function (memberOldRoles, memberNewRoles, user) {
+  // Get the serverId from user
+  let serverId = _.get(user, 'd.guild_id', 0);
+  if(!_.isEqual(serverId, 0)) {
+    let newRoles = _.get(memberNewRoles, 'roles');
+    let oldRoles = _.get(memberOldRoles, 'roles');
+
+    // Don't send message if the role is deleted for the user
+    if(_.size(newRoles) < _.size(oldRoles)) return;
+
+    let newRole = _.difference(_.union(oldRoles, newRoles), _.intersection(oldRoles, newRoles));
+    if (!_.isEmpty(newRole)) {
+      // Generate the message to send to the user
+      let roleData = _.find(roles, function(role) {
+        return role.id === newRole[0];
+      });
+
+      if(!_.isEmpty(roleData)) {
+        // Send DM message
+        bot.sendMessage({
+          to: '' + _.get(user, 'd.user.id') + '', 
+          embed: {
+            color: 0x93c502,
+            author: {
+              name: bot.username,
+              icon_url: _.get(roleData, 'embed.author.icon_url', '')
+            },
+            title: _.get(welcome, 'embed.title', ''),
+            description: _.get(roleData, 'embed.description', ''),
+            fields: [{
+              name: _.get(roleData, 'embed.fields.0.name', ''),
+              value: _.get(roleData, 'embed.fields.0.value', '')
+            }],
+            timestamp: new Date(),
+            footer: {
+              icon_url: _.get(roleData, 'embed.footer.icon_url', ''),
+              text: _.get(roleData, 'embed.footer.text', '') + bot.username
+            }
+          }
+        });
+      }
+    }
+  }
 });
