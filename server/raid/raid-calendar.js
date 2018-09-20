@@ -200,8 +200,8 @@ let formattedEvent = function (events, period) {
       let embedMessage = {};      
       _.set(embedMessage, 'color', 0x93c502);
       _.set(embedMessage, 'author.name', 'Way to Wype');
-      _.set(embedMessage, 'author.icon_url', 'https://github.com/Arct4/way-to-wype-bot/raw/master/wtw_logo.png')
-      _.set(embedMessage, 'thumbnail.url', 'https://wow.zamimg.com/images/wow/icons/large/achievement_nazmir_zone.jpg');
+      _.set(embedMessage, 'author.icon_url', 'https://github.com/Arct4/way-to-wype-bot/raw/master/wtw_logo.png');
+      _.set(embedMessage, 'thumbnail.url', _.get(events, '0.icon_url', ''));
       _.set(embedMessage, 'title', _.get(events, '0.title', ''));
       _.set(embedMessage, 'url', '');
       _.set(embedMessage, 'fields', fieldsDate);
@@ -238,6 +238,7 @@ let generateEventForMonth = function (eventType, month) {
     let defaultGroupHour = _.get(config, 'defaultEvents.' + type + '.hourGroup');
     let defaultBeginHour = _.get(config, 'defaultEvents.' + type + '.hourBegin');
     let defaultEndHour = _.get(config, 'defaultEvents.' + type + '.hourEnd');
+    let iconUrl = _.get(config, 'defaultEvents.' + type + '.icon_url', '');
 
     // Need to get all days from defaultDays
     let allDays = [];
@@ -257,6 +258,7 @@ let generateEventForMonth = function (eventType, month) {
           _.set(eventCalendar, 'eventDay', _.upperFirst(momentDay.format('dddd')));
           _.set(eventCalendar, 'eventDifficulty', defaultDifficulty.id);
           _.set(eventCalendar, 'eventType', eventType);
+          _.set(eventCalendar, 'icon_url', iconUrl);
 
           _.set(eventCalendar, 'begin', moment(day).set({
             hour: moment(defaultBeginHour, 'HH:mm').get('hour'),

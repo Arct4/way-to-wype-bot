@@ -22,7 +22,8 @@
       "eventType": 1,
       "hourBegin": "21:30",
       "hourEnd": "23:30",
-      "hourGroup": "21:15"
+      "hourGroup": "21:15",
+      "icon_url": ""
     },
     "raid": {
       "eventDay": [
@@ -34,7 +35,8 @@
       "eventType": 2,
       "hourBegin": "21:15",
       "hourEnd": "23:15",
-      "hourGroup": "21:00"
+      "hourGroup": "21:00",
+      "icon_url": "https://wow.zamimg.com/images/wow/icons/large/achievement_nazmir_zone.jpg"
     },
     "hf": {
       "eventDay": [
@@ -46,7 +48,8 @@
       "eventType": 3,
       "hourBegin": "21:30",
       "hourEnd": "00:00",
-      "hourGroup": "21:15"
+      "hourGroup": "21:15",
+      "icon_url": ""
     }
   }
 }
