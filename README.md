@@ -70,6 +70,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
   * [x] Let user set a custom prefix for command
   * [x] Send bot's answer with multipart messages to avoid Discord limit (2000 characters)  
   * [x] Use channels objects for default channel (*#my_channel*), not a string (*my_channel*)
+  * [x] On role update, can send a private message to the user to explain the new access
   * [ ] Add translation management
   * [ ] Upgrade Calendar management
     * [ ] Edit specific event
