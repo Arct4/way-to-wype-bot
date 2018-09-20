@@ -56,7 +56,8 @@ bot.on('ready', function (evt) {
             logger.info('radCalenderFunctions.nextDateEvent() : ' + response);
             bot.sendMessage({
               to: raidChannel.id,
-              message: `@here Un raid est prévu aujourd'hui : ${response}`
+              message: `@here Un évènement est prévu aujourd'hui`,
+              embed: response
             })
           }
         });
@@ -261,22 +262,22 @@ bot.on('guildMemberAdd', function (member) {
       color: 0x93c502,
       author: {
         name: bot.username,
-        icon_url: "https://github.com/Arct4/way-to-wype-bot/raw/master/wtw_logo.png"
+        icon_url: _.get(welcome, 'embed.author.icon_url', '')
       },
-      title: "Bienvenue sur le serveur Discord de la guilde Way to Wype !",
-      description: "Ce serveur est utilisé par la guilde Way to Wype officiant sur le serveur Elune (FR) de World of Warcraft",
+      title: _.get(welcome, 'embed.title', ''),
+      description: _.get(welcome, 'embed.description', ''),
       fields: [{
-        name: "Raid",
-        value: "Si vous avez rejoint le serveur pour un raid PU, connectez-vous directement sur le canal vocal 'Raid'.\nLe vocal est actuellement en mute automatique."
+        name: _.get(welcome, 'embed.fields.0.name', ''),
+        value: _.get(welcome, 'embed.fields.0.value', '')
       },
       {
-        name: "Recrutement",
-        value: "Notre recrutement est actuellement ouvert pour toutes les classes, nous recherchons en priorité des Heals et des DPS.\nN'hésitez pas à nous contacter pour de plus amples informations."
+        name: _.get(welcome, 'embed.fields.1.name', ''),
+        value: _.get(welcome, 'embed.fields.1.value', '')
       }],
       timestamp: new Date(),
       footer: {
-        icon_url: "https://github.com/Arct4/way-to-wype-bot/raw/master/wtw_logo.png",
-        text: "Généré automatiquement par " + bot.username
+        icon_url: _.get(welcome, 'embed.footer.icon_url', ''),
+        text: _.get(welcome, 'embed.footer.text', '') + bot.username
       }
     }
   }); 
