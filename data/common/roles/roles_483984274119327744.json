@@ -1,0 +1,40 @@
+[
+  {
+    "id": "492308800515211264",
+    "name": "newTestRole_1",
+    "embed": {
+      "author": {
+        "icon_url": "https://github.com/Arct4/way-to-wype-bot/raw/master/wtw_logo.png"
+      },
+      "title": "Nouveau rôle affecté à votre compte Discord",
+      "description": "Vous venez d'être promu avec le rôle 'newTestRole_1'. Voici les nouveaux accès que vous avez obtenu.",
+      "fields": [{
+        "name": "Canal <#484035508373291009>",
+        "value": "Canal réservé aux officiers et aux conseillers de la guilde. On peut discuter de tout et de rien sur la gestion de la guilde, du roster raid et autres sujets."
+      }],
+      "footer": {
+        "icon_url": "https://github.com/Arct4/way-to-wype-bot/raw/master/wtw_logo.png",
+        "text": "Généré automatiquement par "
+      }
+    }
+  },
+  {
+    "id": "492308846585577472",
+    "name": "newTestRole_2",
+    "embed": {
+      "author": {
+        "icon_url": "https://github.com/Arct4/way-to-wype-bot/raw/master/wtw_logo.png"
+      },
+      "title": "Nouveau rôle affecté à votre compte Discord",
+      "description": "Vous venez d'être promu avec le rôle 'newTestRole_2'. Voici les nouveaux accès que vous avez obtenu.",
+      "fields": [{
+        "name": "Canal <#483984579389161473>",
+        "value": "Canal réservé aux officiers et aux conseillers de la guilde. On peut discuter de tout et de rien sur la gestion de la guilde, du roster raid et autres sujets."
+      }],
+      "footer": {
+        "icon_url": "https://github.com/Arct4/way-to-wype-bot/raw/master/wtw_logo.png",
+        "text": "Généré automatiquement par "
+      }
+    }
+  }
+]

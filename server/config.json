@@ -3,6 +3,7 @@
   "dataFolder": "./data",
   "rosterFolder": "/raid-members",
   "calendarFolder": "/raid-calendar",
+  "rolesFolder": "/common/roles",
   "defaultRealm": "Elune",
   "defaultRegion": "eu",
   "defaultNotifyChannel": "483984579389161473",
