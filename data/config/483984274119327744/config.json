@@ -1,11 +1,4 @@
 {
-  "loggerLevel": "debug",
-  "dataFolder": "./data",
-  "configFolder": "/config",
-  "rosterFolder": "/raid-members",
-  "calendarFolder": "/raid-calendar",
-  "rolesFile": "roles.json",
-  "welcomeFile": "welcome.json",
   "defaultRealm": "Elune",
   "defaultRegion": "eu",
   "defaultNotifyChannel": "483984579389161473",

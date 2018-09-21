@@ -1,19 +1,12 @@
 {
-  "loggerLevel": "debug",
-  "dataFolder": "./data",
-  "configFolder": "/config",
-  "rosterFolder": "/raid-members",
-  "calendarFolder": "/raid-calendar",
-  "rolesFile": "roles.json",
-  "welcomeFile": "welcome.json",
   "defaultRealm": "Elune",
   "defaultRegion": "eu",
-  "defaultNotifyChannel": "483984579389161473",
+  "defaultNotifyChannel": "253902367274041345",
   "prefix": {
     "default": "!",
     "custom": "!"
   },
-  "defaultChannel": "483984579389161473",
+  "defaultChannel": "253902367274041345",
   "defaultEvents": {
     "donjon": {
       "eventDay": [

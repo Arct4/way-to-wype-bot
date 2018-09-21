@@ -1,0 +1,23 @@
+{
+  "tooltip": "Envoi automatique un message de bienvenue à un nouvel arrivant sur votre serveur Discord.\nModifier le 'message' pour customiser le message d'accueil envoyé.",
+  "message": "Bonjour et bienvenue sur le serveur Discord de la guilde Way to Wype !",
+  "embed": {
+    "author": {
+      "icon_url": "https://github.com/Arct4/way-to-wype-bot/raw/master/wtw_logo.png"
+    },
+    "title": "Bienvenue sur le serveur Discord de la guilde Way to Wype !",
+    "description": "Ce serveur est utilisé par la guilde Way to Wype officiant sur le serveur Elune (FR) de World of Warcraft",
+    "fields": [{
+      "name": "Raid",
+      "value": "Si vous avez rejoint le serveur pour un raid PU, connectez-vous directement sur le canal vocal 'Raid'.\n_Le vocal est actuellement en mute automatique._"
+    },
+    {
+      "name": "Recrutement",
+      "value": "Notre recrutement est actuellement ouvert pour toutes les classes, nous recherchons en priorité des Heals et des DPS.\n_N'hésitez pas à nous contacter pour de plus amples informations._"
+    }],
+    "footer": {
+      "icon_url": "https://github.com/Arct4/way-to-wype-bot/raw/master/wtw_logo.png",
+      "text": "Généré automatiquement par "
+    }
+  }
+}

@@ -1,0 +1,114 @@
+[
+  {
+    "id": "253890939855175681",
+    "name": "Officier",
+    "embed": {
+      "author": {
+        "icon_url": "https://github.com/Arct4/way-to-wype-bot/raw/master/wtw_logo.png"
+      },
+      "title": "Nouveau rôle affecté à votre compte Discord",
+      "description": "Vous venez d'être promu avec le rôle 'Officier'. Voici les nouveaux accès que vous avez obtenu.",
+      "fields": [{
+        "name": "Canal #officier",
+        "value": "Canal réservé aux officiers et aux conseillers de la guilde. On peut discuter de tout et de rien sur la gestion de la guilde, du roster raid et autres sujets."
+      }],
+      "footer": {
+        "icon_url": "https://github.com/Arct4/way-to-wype-bot/raw/master/wtw_logo.png",
+        "text": "Généré automatiquement par "
+      }
+    }
+  },
+  {
+    "id": "422840722882822144",
+    "name": "Conseiller",
+    "embed": {
+      "author": {
+        "icon_url": "https://github.com/Arct4/way-to-wype-bot/raw/master/wtw_logo.png"
+      },
+      "title": "Nouveau rôle affecté à votre compte Discord",
+      "description": "Vous venez d'être promu avec le rôle 'Conseiller'. Voici les nouveaux accès que vous avez obtenu.",
+      "fields": [{
+        "name": "Canal #officier",
+        "value": "Canal réservé aux officiers et aux conseillers de la guilde. On peut discuter de tout et de rien sur la gestion de la guilde, du roster raid et autres sujets."
+      }],
+      "footer": {
+        "icon_url": "https://github.com/Arct4/way-to-wype-bot/raw/master/wtw_logo.png",
+        "text": "Généré automatiquement par "
+      }
+    }
+  },
+  {
+    "id": "253891270080987138",
+    "name": "Membre",
+    "embed": {
+      "author": {
+        "icon_url": "https://github.com/Arct4/way-to-wype-bot/raw/master/wtw_logo.png"
+      },
+      "title": "Nouveau rôle affecté à votre compte Discord",
+      "description": "Vous venez d'être promu avec le rôle 'Membre'. Voici les nouveaux accès que vous avez obtenu.",
+      "fields": [{
+        "name": "Canal #logs",
+        "value": "Canal réservé au bot PvPCraft.\nIl permet de savoir qui se connecte et se déconnecte des canaux vocaux du serveur Discord.\n_Ce canal peut être muté pour éviter du flood de notifications._"
+      },
+      {
+        "name": "Canal #irl",
+        "value": "Canal dédié aux IRLs organisées par la guilde. Ne pas hésiter à s'en servir pour organiser des soirées entre membres de la guilde !"
+      },
+      {
+        "name": "Canal #raid",
+        "value": "Canal dédié aux informations Raid. Vous y retrouverez les liens vers les Warcraft Logs ou des discussions autour des stratégies."
+      },
+      {
+        "name": "Canal #stream",
+        "value": "Canal dédie aux streams. Si vous voulez streamer nos exploits, utilisez ce canal pour indiquer que vous lancez un stream sur votre chaîne par exemple."
+      },
+      {
+        "name": "Canal #exemples-ui",
+        "value": "Envie de partager votre interface, discuter autour de certains add-ons, ce canal est là pour ça."
+      }],
+      "footer": {
+        "icon_url": "https://github.com/Arct4/way-to-wype-bot/raw/master/wtw_logo.png",
+        "text": "Généré automatiquement par "
+      }
+    }
+  },
+  {
+    "id": "Invité",
+    "name": "Invité",
+    "embed": {
+      "author": {
+        "icon_url": "https://github.com/Arct4/way-to-wype-bot/raw/master/wtw_logo.png"
+      },
+      "title": "Nouveau rôle affecté à votre compte Discord",
+      "description": "Vous venez d'être promu avec le rôle 'Invité'. Voici les nouveaux accès que vous avez obtenu.",
+      "fields": [{
+        "name": "Canal #accueil",
+        "value": "Canal d'accueil de la guilde. Sert principalement aux messages de flood, ou pour discuter de tout et n'importe quoi. A utiliser sans modération mais dans la limite du raisonnable bien entendu."
+      },
+      {
+        "name": "Canal #bot-role",
+        "value": "Ce canal est utilisé pour vous permettre de choisir votre classe et/ou role sur WoW. Cela impactera les rôles qui vous serons attribués sur Discord."
+      },
+      {
+        "name": "Canal #bot-spam",
+        "value": "Canal dédié aux Bots, vous pouvez utiliser Jeeves et Raidbots ici pour des informations sur votre personnage ou pour simuler vos prouesses en DPS !"
+      },
+      {
+        "name": "Canal #heroes",
+        "value": "Canal dédié à la franchise Heroes of the Storm de Blizzard."
+      },
+      {
+        "name": "Canal #overwatch",
+        "value": "Canal dédié à la franchise Overwatch de Blizzard"
+      },
+      {
+        "name": "Canal #destiny",
+        "value": "Canal dédié à la franchise Destiny d'Activision"
+      }],
+      "footer": {
+        "icon_url": "https://github.com/Arct4/way-to-wype-bot/raw/master/wtw_logo.png",
+        "text": "Généré automatiquement par "
+      }
+    }
+  }
+]
