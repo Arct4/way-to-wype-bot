@@ -89,7 +89,7 @@ bot.on('message', function (user, userID, channelID, message, evt) {
           if(data.defaultChannel !== channelID) {
             bot.sendMessage({ 
               to: channelID, 
-              message: `Les commandes ne peuvent fonctionner que sur le canal <#${config.defaultChannel}>`
+              message: `Les commandes ne peuvent fonctionner que sur le canal <#${data.defaultChannel}>`
             });
             return;
           }
