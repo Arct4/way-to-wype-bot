@@ -4,55 +4,7 @@
   "configFolder": "/config",
   "rosterFolder": "/raid-members",
   "calendarFolder": "/raid-calendar",
+  "configFile": "config.json",
   "rolesFile": "roles.json",
-  "welcomeFile": "welcome.json",
-  "defaultRealm": "Elune",
-  "defaultRegion": "eu",
-  "defaultNotifyChannel": "483984579389161473",
-  "prefix": {
-    "default": "!",
-    "custom": "!"
-  },
-  "defaultChannel": "483984579389161473",
-  "defaultEvents": {
-    "donjon": {
-      "eventDay": [
-        2,
-        5,
-        7
-      ],
-      "eventDifficulty": 4,
-      "eventType": 1,
-      "hourBegin": "21:30",
-      "hourEnd": "23:30",
-      "hourGroup": "21:15",
-      "icon_url": ""
-    },
-    "raid": {
-      "eventDay": [
-        1,
-        3,
-        4
-      ],
-      "eventDifficulty": 1,
-      "eventType": 2,
-      "hourBegin": "21:15",
-      "hourEnd": "23:15",
-      "hourGroup": "21:00",
-      "icon_url": "https://wow.zamimg.com/images/wow/icons/large/achievement_nazmir_zone.jpg"
-    },
-    "hf": {
-      "eventDay": [
-        2,
-        5,
-        7
-      ],
-      "eventDifficulty": 1,
-      "eventType": 3,
-      "hourBegin": "21:30",
-      "hourEnd": "00:00",
-      "hourGroup": "21:15",
-      "icon_url": ""
-    }
-  }
+  "welcomeFile": "welcome.json"  
 }

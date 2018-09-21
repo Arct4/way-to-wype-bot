@@ -5,20 +5,10 @@ const fs = require('fs');
 const config = require('../config.json');
 
 module.exports = {
-  getAnswerChannel: function (channels) {
-    if(!_.isEmpty(config.defaultChannel)) {
+  getRaidChannel: function (data, channels) {
+    if(!_.isEmpty(data.defaultNotifyChannel)) {
       return _.find(channels, function(channel) {
-        return channel.id === config.defaultChannel;
-      });
-    } else {
-      return '';
-    }
-  },
-
-  getRaidChannel: function (channels) {
-    if(!_.isEmpty(config.defaultNotifyChannel)) {
-      return _.find(channels, function(channel) {
-        return channel.id === config.defaultNotifyChannel;
+        return channel.id === data.defaultNotifyChannel;
       });
     } else {
       return '';

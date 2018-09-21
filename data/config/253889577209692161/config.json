@@ -1,12 +1,12 @@
 {
   "defaultRealm": "Elune",
   "defaultRegion": "eu",
-  "defaultNotifyChannel": "253902367274041345",
+  "defaultNotifyChannel": "271318886408912896",
   "prefix": {
     "default": "!",
     "custom": "!"
   },
-  "defaultChannel": "253902367274041345",
+  "defaultChannel": "271318886408912896",
   "defaultEvents": {
     "donjon": {
       "eventDay": [

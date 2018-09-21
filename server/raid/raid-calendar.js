@@ -19,9 +19,9 @@ const periods = { day: 'day', month: 'month', next: 'next' };
 
 module.exports = {
   // Get Next event
-  raidEventNext: function() {
+  raidEventNext: function(serverId) {
     return new Promise((resolve, reject) => {
-      getEvents(periods.day)
+      getEvents(serverId, periods.day)
         .then(response => {
           resolve(response);
         })
@@ -32,9 +32,9 @@ module.exports = {
   },
 
   // Get all events for current month
-  raidEventMonth: function() {
+  raidEventMonth: function(serverId) {
     return new Promise((resolve, reject) => {
-      getEvents(periods.month)
+      getEvents(serverId, periods.month)
         .then(response => {
           resolve(response);
         })
@@ -45,9 +45,9 @@ module.exports = {
   },
 
   // Get next Event 
-  nextDateEvent: function() {
+  nextDateEvent: function(serverId) {
     return new Promise((resolve, reject) => {
-      getEvents(periods.next)
+      getEvents(serverId, periods.next)
         .then(response => {
           resolve(response);
         })
@@ -110,7 +110,7 @@ module.exports = {
 }
 
 // Get alls events for a period (day, month or next)
-let getEvents = function (period) {
+let getEvents = function (serverId, period) {
   return new Promise((resolve, reject) => {
     let currentDate = moment();
     let year = currentDate.year();
@@ -118,7 +118,7 @@ let getEvents = function (period) {
     let nextMonth = months[currentDate.month() + 1]; // maybe a bug here with December (11) + 1 // TODO: fix later
     let timestamp = currentDate.format('x'); // timestamp for currentDate
 
-    let path = config.dataFolder + config.calendarFolder + '/' + year + '/' ;
+    let path = config.dataFolder + config.calendarFolder + '/' + serverId + '/' + year + '/' ;
     let pathCurrentMonth = path + _.lowerFirst(month) + '.json';
     let pathNextMonth = path + _.lowerFirst(nextMonth) + '.json'    
     
