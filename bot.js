@@ -254,8 +254,8 @@ bot.on('message', function (user, userID, channelID, message, evt) {
 });
 
 bot.on('guildMemberAdd', function (member) { 
-  // Send a DM with welcome message to new user   
-  let serverId = _.get(member, 'd.guild_id', 0);
+  // Send a DM with welcome message to new user 
+  let serverId = _.get(member, 'guild_id', 0);
   if(!_.isEqual(serverId, 0)) {
     let fullPath = config.dataFolder + config.configFolder + '/' + serverId + '/' + config.welcomeFile;
     if(fs.existsSync(fullPath)) {
@@ -325,7 +325,7 @@ bot.on('guildMemberUpdate', function (memberOldRoles, memberNewRoles, user) {
                 name: bot.username,
                 icon_url: _.get(roleData, 'embed.author.icon_url', '')
               },
-              title: _.get(welcome, 'embed.title', ''),
+              title: _.get(roleData, 'embed.title', ''),
               description: _.get(roleData, 'embed.description', ''),
               fields: [{
                 name: _.get(roleData, 'embed.fields.0.name', ''),
