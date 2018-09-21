@@ -75,5 +75,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
   * [ ] Upgrade Calendar management
     * [ ] Edit specific event
     * [ ] Add icon's url for an event (*to identify the event like Uldir or TD or AD for example*)
+  * [ ] Work on multiple server
+    * [x] Calendar management
+    * [x] DM management (welcome and roles)
+    * [ ] Roster's members management
 * Docs
   * [ ] Add docs for each command available
