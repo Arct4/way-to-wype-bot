@@ -7,7 +7,6 @@ const fs = require('fs');
 // Modules import
 const auth = require('./auth.json');
 const command = require('./data/common/command.json');
-const welcome = require('./data/common/welcome.json');
 const config = require('./server/config.json');
 const utils = require('./server/utils/utils');
 const raidMembersFunctions = require('./server/raid/raid-member');
@@ -56,7 +55,7 @@ bot.on('ready', function (evt) {
             logger.info('radCalenderFunctions.nextDateEvent() : ' + response);
             bot.sendMessage({
               to: raidChannel.id,
-              message: `@here Un évènement est prévu aujourd'hui`,
+              message: `Un évènement est prévu aujourd'hui`,
               embed: response
             })
           }
@@ -256,31 +255,39 @@ bot.on('message', function (user, userID, channelID, message, evt) {
 
 bot.on('guildMemberAdd', function (member) { 
   // Send a DM with welcome message to new user   
-  bot.sendMessage({ 
-    to: '' + member.id + '', 
-    embed: {
-      color: 0x93c502,
-      author: {
-        name: bot.username,
-        icon_url: _.get(welcome, 'embed.author.icon_url', '')
-      },
-      title: _.get(welcome, 'embed.title', ''),
-      description: _.get(welcome, 'embed.description', ''),
-      fields: [{
-        name: _.get(welcome, 'embed.fields.0.name', ''),
-        value: _.get(welcome, 'embed.fields.0.value', '')
-      },
-      {
-        name: _.get(welcome, 'embed.fields.1.name', ''),
-        value: _.get(welcome, 'embed.fields.1.value', '')
-      }],
-      timestamp: new Date(),
-      footer: {
-        icon_url: _.get(welcome, 'embed.footer.icon_url', ''),
-        text: _.get(welcome, 'embed.footer.text', '') + bot.username
-      }
+  let serverId = _.get(member, 'd.guild_id', 0);
+  if(!_.isEqual(serverId, 0)) {
+    let fullPath = config.dataFolder + config.configFolder + '/' + serverId + '/' + config.welcomeFile;
+    if(fs.existsSync(fullPath)) {
+      let welcomeData = JSON.parse(fs.readFileSync(fullPath));
+
+      bot.sendMessage({ 
+        to: '' + member.id + '', 
+        embed: {
+          color: 0x93c502,
+          author: {
+            name: bot.username,
+            icon_url: _.get(welcomeData, 'embed.author.icon_url', '')
+          },
+          title: _.get(welcomeData, 'embed.title', ''),
+          description: _.get(welcomeData, 'embed.description', ''),
+          fields: [{
+            name: _.get(welcomeData, 'embed.fields.0.name', ''),
+            value: _.get(welcomeData, 'embed.fields.0.value', '')
+          },
+          {
+            name: _.get(welcomeData, 'embed.fields.1.name', ''),
+            value: _.get(welcomeData, 'embed.fields.1.value', '')
+          }],
+          timestamp: new Date(),
+          footer: {
+            icon_url: _.get(welcomeData, 'embed.footer.icon_url', ''),
+            text: _.get(welcomeData, 'embed.footer.text', '') + bot.username
+          }
+        }
+      });
     }
-  }); 
+  }
 });
 
 // Generate and send a DM to describe new roles for the user
@@ -290,9 +297,8 @@ bot.on('guildMemberAdd', function (member) {
 bot.on('guildMemberUpdate', function (memberOldRoles, memberNewRoles, user) {
   // Get the serverId from user
   let serverId = _.get(user, 'd.guild_id', 0);
-  console.log(serverId);
   if(!_.isEqual(serverId, 0)) {
-    let fullPath = config.dataFolder + config.rolesFolder + '/roles_' + serverId + '.json';
+    let fullPath = config.dataFolder + config.configFolder + '/' + serverId + '/' + config.rolesFile;
     if(fs.existsSync(fullPath)) {      
       let newRoles = _.get(memberNewRoles, 'roles');
       let oldRoles = _.get(memberOldRoles, 'roles');
