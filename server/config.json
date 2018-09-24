@@ -6,5 +6,7 @@
   "calendarFolder": "/raid-calendar",
   "configFile": "config.json",
   "rolesFile": "roles.json",
-  "welcomeFile": "welcome.json"  
+  "welcomeFile": "welcome.json",
+  "defaultRealm": "Elune",
+  "defaultRegion": "eu"
 }

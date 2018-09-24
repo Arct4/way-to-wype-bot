@@ -17,12 +17,12 @@ const TEXT_MESSAGE_LIMIT = 2000;
 
 module.exports = {
   // use to answer to !raid-status command
-  raidStatus: function (action, bot, channelID) {
+  raidStatus: function (serverId, action, bot, channelID) {
     return new Promise((resolve, reject) => {
       switch(action) {
         // !raid-status-show command
         case "show":
-          showRoster()
+          showRoster(serverId)
             .then(result => {
               resolve(result);
             })
@@ -32,7 +32,7 @@ module.exports = {
         break;
         // !raid-status-update command
         case "update":
-          checkArmoryForRoster(bot, channelID)
+          checkArmoryForRoster(serverId, bot, channelID)
             .then(result => {
               resolve(result);
             })
@@ -44,30 +44,30 @@ module.exports = {
     });
   },
   // use to answer to !raid-member command
-  raidMembers: function (action, args) {
+  raidMembers: function (serverId, action, args) {
     let msg = '';
     switch(action) {
       // !raid-member-add command
       case "add":
-        msg = addPlayersToRoster(args);        
+        msg = addPlayersToRoster(serverId, args);        
       break;
       // !raid-member-remove command
       case "remove":
-        msg = removePlayersFromRoster(args);      
+        msg = removePlayersFromRoster(serverId, args);      
       break;      
       case "set-role": // !raid-member-set-role command
       case "set-class": // !raid-member-set-class command
       case "set-realm": // !raid-member-set-realm command
-        msg = setPropertyForPlayer(args, action);
+        msg = setPropertyForPlayer(serverId, args, action);
       break;
     }
 
     return msg;
   },
   // use to update one player each time
-  raidMembersUpdate: function (args) {
+  raidMembersUpdate: function (serverId, args) {
     return new Promise((resolve, reject) => {
-      updatePlayer(args)
+      updatePlayer(serverId, args)
         .then(result => {
           resolve(result);
         })
@@ -80,12 +80,12 @@ module.exports = {
 
 //#region raidStatus functions
 // Get all data from json files and give a preformatted text
-let showRoster = function () {
+let showRoster = function (serverId) {
   return new Promise((resolve, reject) => {
     let sizeOfMessage = 0;
     let tabMessages = [];
     let message = '';
-    let path = config.dataFolder + config.rosterFolder + '/';
+    let path = config.dataFolder + config.rosterFolder + '/' + serverId + '/';
 
     let header = '```css\n' 
       + STRING_SEPARATOR + _.pad('', STRING_MAX_LENGTH, '-') + STRING_SEPARATOR + '\n'  
@@ -166,10 +166,10 @@ let showRoster = function () {
 }
 
 // Get all data from Blizzard Armory for player's file
-let checkArmoryForRoster = function (bot, channelID) {
+let checkArmoryForRoster = function (serverId, bot, channelID) {
   return new Promise((resolve, reject) => {
     let response = {};
-    let path = config.dataFolder + config.rosterFolder + '/';
+    let path = config.dataFolder + config.rosterFolder + '/' + serverId + '/';
     
     if(!_.isEmpty(path)) {
       fs.readdir(path, function (err, files) {
@@ -220,7 +220,7 @@ let checkArmoryForRoster = function (bot, channelID) {
 
 //#region raidMembers functions
 // Add players to the guild roster
-let addPlayersToRoster = function (playersName) {
+let addPlayersToRoster = function (serverId, playersName) {
   let msg = '';
   let addedPlayers = '';
   let existedPlayers = '';
@@ -230,7 +230,7 @@ let addPlayersToRoster = function (playersName) {
     let realm = value.split('-')[1];
 
     // if player name already in file, don't add to the file
-    let path = config.dataFolder + config.rosterFolder + '/' + _.lowerCase(name) + '.json';
+    let path = config.dataFolder + config.rosterFolder + '/' + serverId + '/' + _.lowerCase(name) + '.json';
     if(!fs.existsSync(path)) {
       // create json object for new player            
       let playerData = new Player(name);
@@ -266,14 +266,14 @@ let addPlayersToRoster = function (playersName) {
 }
 
 // Remove players from the guild roster
-let removePlayersFromRoster = function (playersName) {
+let removePlayersFromRoster = function (serverId, playersName) {
   let msg = '';
   let removedPlayers = '';
   let notExistPlayers = '';
 
   _.forEach(playersName, function(value) {
     // if player file exist, we can delete it
-    let path = config.dataFolder + config.rosterFolder + '/' + _.lowerCase(value) + '.json';
+    let path = config.dataFolder + config.rosterFolder + '/' + serverId + '/' + _.lowerCase(value) + '.json';
     if(fs.existsSync(path)) {
       // delete json file
       fs.unlinkSync(path, function (err) {
@@ -305,9 +305,9 @@ let removePlayersFromRoster = function (playersName) {
 }
 
 // Use to update a specific player (command !raid-member-update)
-let updatePlayer = function (playerName) {
+let updatePlayer = function (serverId, playerName) {
   return new Promise((resolve, reject) => {
-    let path = config.dataFolder + config.rosterFolder + '/' + _.lowerCase(playerName) + '.json';
+    let path = config.dataFolder + config.rosterFolder + '/' + serverId + '/' + _.lowerCase(playerName) + '.json';
     if(fs.existsSync(path)) {
       let rawdata = fs.readFileSync(path);
 
@@ -330,7 +330,7 @@ let updatePlayer = function (playerName) {
 // Set a role, class or realm to roster's member
 // First arg : role or class or realm
 // Another args : list of players to update
-let setPropertyForPlayer = function (args, action) {
+let setPropertyForPlayer = function (serverId, args, action) {
   let msg = '';
   let updatedPlayers = '';
   let notExistPlayers = '';
@@ -339,7 +339,7 @@ let setPropertyForPlayer = function (args, action) {
   let playersName = args.splice(1);
 
   _.forEach(playersName, function(value) {
-    let path = config.dataFolder + config.rosterFolder + '/' + _.lowerCase(value) + '.json';
+    let path = config.dataFolder + config.rosterFolder + '/' + serverId + '/' + _.lowerCase(value) + '.json';
     if(fs.existsSync(path)) {
       let rawdata = fs.readFileSync(path);
       let player = JSON.parse(rawdata);

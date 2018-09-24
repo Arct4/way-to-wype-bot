@@ -95,7 +95,7 @@ bot.on('message', function (user, userID, channelID, message, evt) {
           // !raid-status-show
           case command.raidStatusShow.name:
           case command.raidStatusShow.alias:
-            raidMembersFunctions.raidStatus('show')
+            raidMembersFunctions.raidStatus(serverId, 'show')
               .then(result => {
                 if(!_.isEmpty(result)) {
                   let msg = '';
@@ -120,7 +120,7 @@ bot.on('message', function (user, userID, channelID, message, evt) {
           // !raid-status-update
           case command.raidStatusUpdate.name:
           case command.raidStatusUpdate.alias:              
-            raidMembersFunctions.raidStatus('update', bot, channelID)
+            raidMembersFunctions.raidStatus(serverId, 'update', bot, channelID)
               .then(response => {
                 bot.sendMessage({
                   to: channelID,
@@ -133,13 +133,13 @@ bot.on('message', function (user, userID, channelID, message, evt) {
           case command.raidMemberAdd.alias:
             bot.sendMessage({
               to: channelID,
-              message: raidMembersFunctions.raidMembers('add', args)
+              message: raidMembersFunctions.raidMembers(serverId, 'add', args)
             });
             break;
           // !raid-member-update
           case command.raidMemberUpdate.name:    
           case command.raidMemberUpdate.alias:
-            raidMembersFunctions.raidMembersUpdate(args)
+            raidMembersFunctions.raidMembersUpdate(serverId, args)
               .then(response => {
                 bot.sendMessage({
                   to: channelID,
@@ -152,7 +152,7 @@ bot.on('message', function (user, userID, channelID, message, evt) {
           case command.raidMemberRemove.alias:
             bot.sendMessage({
               to: channelID,
-              message: raidMembersFunctions.raidMembers('remove', args)
+              message: raidMembersFunctions.raidMembers(serverId, 'remove', args)
             });
             break;
           // !raid-member-set-role
@@ -160,7 +160,7 @@ bot.on('message', function (user, userID, channelID, message, evt) {
           case command.raidMemberSetRole.alias:
             bot.sendMessage({
               to: channelID,
-              message: raidMembersFunctions.raidMembers('set-role', args)
+              message: raidMembersFunctions.raidMembers(serverId, 'set-role', args)
             });
             break;
           // !raid-member-set-class
@@ -168,7 +168,7 @@ bot.on('message', function (user, userID, channelID, message, evt) {
           case command.raidMemberSetClass.alias:
             bot.sendMessage({
               to: channelID,
-              message: raidMembersFunctions.raidMembers('set-class', args)
+              message: raidMembersFunctions.raidMembers(serverId, 'set-class', args)
             });
             break;
           // !raid-member-set-realm
@@ -176,7 +176,7 @@ bot.on('message', function (user, userID, channelID, message, evt) {
           case command.raidMemberSetRealm.alias:
             bot.sendMessage({
               to: channelID,
-              message: raidMembersFunctions.raidMembers('set-realm', args)
+              message: raidMembersFunctions.raidMembers(serverId, 'set-realm', args)
             });
             break;
           // !raid-event-next

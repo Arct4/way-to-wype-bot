@@ -20,7 +20,7 @@ module.exports = {
       if(!_.isEmpty(arg)) {
         let path = config.dataFolder + config.configFolder + '/' + serverId + '/' + config.configFile;
         if(fs.existsSync(path)) {
-          let configData = JSON.parse(fs.readSync(path));
+          let configData = JSON.parse(fs.readFileSync(path));
           
           _.set(configData, 'prefix.custom', arg[0]);
           
@@ -46,7 +46,7 @@ module.exports = {
       if(!_.isEmpty(arg)) {
         let path = config.dataFolder + config.configFolder + '/' + serverId + '/' + config.configFile;
         if(fs.existsSync(path)) {
-          let configData = JSON.parse(fs.readSync(path));
+          let configData = JSON.parse(fs.readFileSync(path));
 
           let idChannel = arg[0].substr(2, _.size(arg[0]) - 3);
           _.set(configData, 'defaultChannel', idChannel);
