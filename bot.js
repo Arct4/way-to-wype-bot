@@ -73,7 +73,7 @@ bot.on('message', function (user, userID, channelID, message, evt) {
             break;
           // !set-prefix
           case command.setPrefix.name:
-            utils.setBotPrefix(args)
+            utils.setBotPrefix(serverId, args)
               .then(response => {
                 bot.sendMessage({
                   to: channelID,
@@ -84,7 +84,7 @@ bot.on('message', function (user, userID, channelID, message, evt) {
           // !set-default-channel
           case command.setDefaultChannel.name:
           case command.setDefaultChannel.alias:
-            utils.setBotDefaultChannel(args)
+            utils.setBotDefaultChannel(serverId, args)
               .then(response => {
                 bot.sendMessage({
                   to: channelID,

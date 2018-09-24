@@ -15,39 +15,53 @@ module.exports = {
     }
   },
 
-  setBotPrefix: function (arg) {
+  setBotPrefix: function (serverId, arg) {
     return new Promise((resolve, reject) => {
       if(!_.isEmpty(arg)) {
-        _.set(config, 'prefix.custom', arg[0]);
+        let path = config.dataFolder + config.configFolder + '/' + serverId + '/' + config.configFile;
+        if(fs.existsSync(path)) {
+          let configData = JSON.parse(fs.readSync(path));
+          
+          _.set(configData, 'prefix.custom', arg[0]);
+          
+          fs.writeFileSync(path, JSON.stringify(configData, null, 2), function (err) {
+            if (err) {
+              logger.error(err);
+              reject(err);
+            }
+          });
 
-        fs.writeFileSync('./server/config.json', JSON.stringify(config, null, 2), function (err) {
-          if (err) {
-            logger.error(err);
-            reject(err);
-          }
-        });
-
-        resolve('Préfixe customisé défini à : `' + arg[0] + '`');
+          resolve('Préfixe customisé défini à : `' + arg[0] + '`');
+        } else {
+          reject('Impossible de trouver le fichier de configuration du serveur.');
+        }
       } else {
         reject('Impossible de définir le préfixe customisé.');
       }
     });
   },
 
-  setBotDefaultChannel: function (arg) {
+  setBotDefaultChannel: function (serverId, arg) {
     return new Promise((resolve, reject) => {
       if(!_.isEmpty(arg)) {
-        let idChannel = arg[0].substr(2, _.size(arg[0]) - 3);
-        _.set(config, 'defaultChannel', idChannel);
+        let path = config.dataFolder + config.configFolder + '/' + serverId + '/' + config.configFile;
+        if(fs.existsSync(path)) {
+          let configData = JSON.parse(fs.readSync(path));
 
-        fs.writeFileSync('./server/config.json', JSON.stringify(config, null, 2), function (err) {
-          if (err) {
-            logger.error(err);
-            reject(err);
-          }
-        });
+          let idChannel = arg[0].substr(2, _.size(arg[0]) - 3);
+          _.set(configData, 'defaultChannel', idChannel);
 
-        resolve('Canal par défaut défini à : <#' + idChannel + '>');
+          fs.writeFileSync(path, JSON.stringify(configData, null, 2), function (err) {
+            if (err) {
+              logger.error(err);
+              reject(err);
+            }
+          });
+
+          resolve('Canal par défaut défini à : <#' + idChannel + '>');
+        } else {
+          reject('Impossible de trouver le fichier de configuration du serveur.');
+        }
       } else {
         reject('Impossible de définir le canal par défaut.');
       }
