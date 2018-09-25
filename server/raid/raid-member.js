@@ -13,7 +13,9 @@ logger.level = config.loggerLevel;
 
 const STRING_SEPARATOR = '|';
 const STRING_MAX_LENGTH = 106;
+const STRING_MYTHIC_MAX_LENGTH = 79;
 const TEXT_MESSAGE_LIMIT = 2000;
+const listDungeons = ['AD', 'UNDR', 'ML', 'TD', 'FH', 'KR', 'TOS', 'SOTS', 'WM', 'SIEGE'];
 
 module.exports = {
   // use to answer to !raid-status command
@@ -42,6 +44,13 @@ module.exports = {
         break;
         // !raid-mythic-show command
         case "show-mythic":
+          showMythic(serverId)
+            .then(result => {
+              resolve(result);
+            })
+            .catch(error => {
+              reject(error);
+            });
         break;
         // !raid-mythic-update command
         case "update-mythic":
@@ -517,9 +526,10 @@ let setPropertyForPlayerFromRaiderIo = function (path, player, data) {
     let dungeonArray = [];
     _.forEach(dungeonsData, function (dungeon) {
       let dungeonObject = {};
-      _.set(dungeonObject, 'dungeon', _.get(dungeon, "dungeon", ''));
-      _.set(dungeonObject, 'short_name', _.get(dungeon, "short_name", ''));
-      _.set(dungeonObject, 'mythic_level', _.get(dungeon, "mythic_level", 0));
+      _.set(dungeonObject, 'dungeon', _.get(dungeon, 'dungeon', ''));
+      _.set(dungeonObject, 'short_name', _.get(dungeon, 'short_name', ''));
+      _.set(dungeonObject, 'mythic_level', _.get(dungeon, 'mythic_level', 0));
+      _.set(dungeonObject, 'num_keystone_upgrades', _.get(dungeon, 'num_keystone_upgrades', 0));
 
       dungeonArray.push(dungeonObject);
     });
@@ -536,5 +546,106 @@ let setPropertyForPlayerFromRaiderIo = function (path, player, data) {
       });
     }
   }
+}
+
+let showMythic = function (serverId) {
+  return new Promise((resolve, reject) => {
+    let sizeOfMessage = 0;
+    let tabMessages = [];
+    let message = '';
+    let path = config.dataFolder + config.rosterFolder + '/' + serverId + '/';
+    
+    let header = '```css\n' 
+      + STRING_SEPARATOR + _.pad('', STRING_MYTHIC_MAX_LENGTH, '-') + STRING_SEPARATOR + '\n'  
+      + STRING_SEPARATOR + ' ' + _.pad('Personnage', 16) 
+      + STRING_SEPARATOR + _.pad('AD', 5) 
+      + STRING_SEPARATOR + _.pad('UNDR', 5) 
+      + STRING_SEPARATOR + _.pad('ML', 5)
+      + STRING_SEPARATOR + _.pad('TD', 5)
+      + STRING_SEPARATOR + _.pad('FH', 5)
+      + STRING_SEPARATOR + _.pad('KR', 5) 
+      + STRING_SEPARATOR + _.pad('TOS', 5) 
+      + STRING_SEPARATOR + _.pad('SOTS', 5)
+      + STRING_SEPARATOR + _.pad('WM', 5)
+      + STRING_SEPARATOR + _.pad('SIEGE', 7)
+      + STRING_SEPARATOR + '\n' 
+      + STRING_SEPARATOR + _.pad('', STRING_MYTHIC_MAX_LENGTH, '-') + STRING_SEPARATOR + '\n';
+    let content = '';
+    let footer = STRING_SEPARATOR + _.pad('', STRING_MYTHIC_MAX_LENGTH, '-') + STRING_SEPARATOR + '\n```';
+
+    // Get first size of text
+    sizeOfMessage = (_.size(header) + _.size(content) + _.size(footer));
+    commonFiles.readdirAsync(path)
+      .then(results => {
+        if(!_.isEmpty(results)) {
+          let players = [];
+          for (let index = 0; index < results.length; index++) {
+            players.push(commonFiles.readFileAsync(path + results[index]));
+          }
+         
+          Promise.all(players)
+            .then(playersList => {
+              if(!_.isEmpty(playersList)) {
+                playersList = _.orderBy(playersList, ['name'], ['asc']);
+
+                _.forEach(playersList, function (player) {
+                  let mythicData = _.get(player, 'mythic');
+                  if(!_.isEmpty(mythicData)) {
+                    message = STRING_SEPARATOR + ' ' + _.padEnd(_.get(player, 'name', ''), 16) 
+                      + STRING_SEPARATOR + _.pad(getLevelForDungeon(mythicData, 0), 5) 
+                      + STRING_SEPARATOR + _.pad(getLevelForDungeon(mythicData, 1), 5) 
+                      + STRING_SEPARATOR + _.pad(getLevelForDungeon(mythicData, 2), 5)
+                      + STRING_SEPARATOR + _.pad(getLevelForDungeon(mythicData, 3), 5)
+                      + STRING_SEPARATOR + _.pad(getLevelForDungeon(mythicData, 4), 5)
+                      + STRING_SEPARATOR + _.pad(getLevelForDungeon(mythicData, 5), 5) 
+                      + STRING_SEPARATOR + _.pad(getLevelForDungeon(mythicData, 6), 5) 
+                      + STRING_SEPARATOR + _.pad(getLevelForDungeon(mythicData, 7), 5)
+                      + STRING_SEPARATOR + _.pad(getLevelForDungeon(mythicData, 8), 5)
+                      + STRING_SEPARATOR + _.pad(getLevelForDungeon(mythicData, 9), 7)
+                      + STRING_SEPARATOR + '\n';
+
+                    if((_.size(message) + sizeOfMessage) <= TEXT_MESSAGE_LIMIT) {                    
+                      content += message;
+                    } else {
+                      tabMessages.push(header + content + footer);                    
+                      content = message;
+                    }
+
+                    // Update size of message
+                    sizeOfMessage = _.size(header) + _.size(content) + _.size(footer);
+                  }
+                });
+
+                if(_.isEmpty(tabMessages) ||
+                    !_.isEmpty(content)) {
+                  // Full message is shorter than TEXT_MESSAGE_LIMIT, must add content after loop treatment
+                  tabMessages.push(header + content + footer);
+                }
+              }
+
+              resolve(tabMessages);
+          })
+          .catch(error => {
+            reject(error);
+          });
+        }
+      })
+      .catch(error => {
+        reject(error);
+      });
+  });
+}
+
+let getLevelForDungeon = function (mythicData, index) {  
+  let result = '0';
+  let dungeon = _.find(mythicData, function (dungeon) {
+    return listDungeons[index] === dungeon.short_name;
+  });
+
+  if(!_.isEmpty(dungeon)) {
+    result = _.padEnd(_.get(dungeon, 'mythic_level', 0), _.get(dungeon, 'num_keystone_upgrades',0), '*');
+  }
+
+  return result;
 }
 //#endregion
