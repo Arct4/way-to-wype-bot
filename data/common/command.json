@@ -68,5 +68,15 @@
     "name": "calendar-month-event",
     "alias": "cme",
     "tooltip": "Génère le fichier json des évènements pour le mois passé en paramètre (mois en anglais atm)"
+  },
+  "raidMythicShow": {
+    "name": "raid-mythic-show",
+    "alias": "ios",
+    "tooltip": "Montre la liste des meilleures clés mythiques effectuées par les membres définis dans le roster raid de la guilde"
+  },
+  "raidMythicUpdate": {
+    "name": "raid-mythic-update",
+    "alias": "iou",
+    "tooltip": "Met à jour la liste des meilleures clés mythiques réalisées par les membres définis dans le roster raid de la guilde"
   }
 }

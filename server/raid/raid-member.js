@@ -40,6 +40,19 @@ module.exports = {
               reject(error);
             });
         break;
+        // !raid-mythic-show command
+        case "show-mythic":
+        break;
+        // !raid-mythic-update command
+        case "update-mythic":
+          checkRaiderIoForRoster(serverId, bot, channelID)
+            .then(result => {
+              resolve(result);
+            })
+            .catch(error => {
+              reject(error);
+            });
+        break;
       }
     });
   },
@@ -443,5 +456,85 @@ let calculateNeckLevel = function (playerNeck) {
   if(needed !== 0 && exp !== 0) {
     return (level + (exp / needed)).toFixed(1);
   } else return 0;
+}
+//#endregion
+
+//#region RaiderIO functions
+let checkRaiderIoForRoster = function (serverId, bot, channelID) {
+  return new Promise((resolve, reject) => {
+    let response = {};
+    let path = config.dataFolder + config.rosterFolder + '/' + serverId + '/';
+    
+    if(!_.isEmpty(path)) {
+      fs.readdir(path, function (err, files) {
+        if (err) throw err;
+
+        bot.sendMessage({
+          to: channelID,
+          message: 'Update des scores Mythic+ du roster en cours'
+        }, function(err, res) {
+          if(err) throw err;
+          
+          _.set(response, 'channelId', channelID);
+          _.set(response, 'messageId', res.id);
+          _.set(response, 'message', 'La mise à jour du roster a été effectuée. Utilisez la commande `raid-mythic-show` ou `iou` pour le voir.');
+
+          files.forEach(function (file) {          
+            let fullPath = path + file;
+            let rawdata = fs.readFileSync(fullPath);
+  
+            let player = new Player();          
+            player.setProperties = JSON.parse(rawdata);
+
+            // Update message to give some information to bot's user
+            bot.editMessage({
+              channelID: channelID,
+              messageID: res.id,
+              message: `Mise à jour du joueur '${_.get(player, 'name')}' en cours.`
+            });
+
+            // Update items datas
+            player.getRaiderIODataForPlayer('mythic_plus_best_runs:all')
+              .then(response => {
+                setPropertyForPlayerFromRaiderIo(fullPath, player, response);
+                resolve(`Le joueur ${player.name} a été mis à jour.`);              
+              })
+              .catch(error => {
+                reject(error);
+              });
+          });
+  
+          resolve(response);
+        });
+      });
+    }
+  });
+}
+
+let setPropertyForPlayerFromRaiderIo = function (path, player, data) {
+  let dungeonsData = _.get(data, 'mythic_plus_best_runs');
+  if (!_.isEmpty(dungeonsData)) {
+    let dungeonArray = [];
+    _.forEach(dungeonsData, function (dungeon) {
+      let dungeonObject = {};
+      _.set(dungeonObject, 'dungeon', _.get(dungeon, "dungeon", ''));
+      _.set(dungeonObject, 'short_name', _.get(dungeon, "short_name", ''));
+      _.set(dungeonObject, 'mythic_level', _.get(dungeon, "mythic_level", 0));
+
+      dungeonArray.push(dungeonObject);
+    });
+
+    if (!_.isEmpty(dungeonArray)) {
+      _.set(player, 'mythic', dungeonArray);
+
+      // update json file for player
+      fs.writeFileSync(path, JSON.stringify(player, null, 2), function (err) {
+        if (err) {
+          logger.error(err);
+          throw err;
+        }
+      });
+    }
+  }
 }
 //#endregion

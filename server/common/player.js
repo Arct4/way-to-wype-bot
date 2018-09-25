@@ -1,9 +1,9 @@
 const _ = require('lodash');
 const logger = require('winston');
-const https = require('https');
 
 const auth = require('../../auth.json');
 const config = require('../config.json');
+const utils = require('../utils/utils');
 
 // Configure logger settings
 logger.level = config.loggerLevel;
@@ -42,41 +42,24 @@ module.exports = class Player {
   getDataForPlayer(field) {
     return new Promise((resolve, reject) => {
       let apiPath = encodeURI(`https://${this.region}.api.battle.net/wow/character/${this.realm}/${this.name}?fields=${field}&locale=fr_FR&apikey=${auth.wowApiKey}`);
-      https.get(apiPath, (res) => {
-        var { statusCode } = res;
-        var contentType = res.headers['content-type'];
-        let rawData = '';
-        let error;
-  
-        if (statusCode !== 200) {
-          error = new Error('Request Failed.\n' + `Status Code: ${statusCode} for path ${apiPath}`);
-        } else if (!/^application\/json/.test(contentType)) {
-          error = new Error('Invalid content-type.\n' + `Expected application/json but received ${contentType}`);
-        }
-  
-        if (error) {
-          logger.error(error.message);
-          // consume response data to free up memory
-          res.resume();
-        }
-  
-        res.setEncoding('utf8');
-        
-        res.on('data', (chunk) => {
-          rawData += chunk;
+      utils.getDataFromUrl(apiPath)
+        .then(result => {
+          resolve(result);
+        }).catch(error => {
+          reject(error);
         });
-  
-        res.on('end', () => {
-          try {
-            const parsedData = JSON.parse(rawData);
-            resolve(parsedData);
-          } catch (e) {
-            reject(e.message);
-          }
-        });
-      }).on('error', (e) => {
-        reject(`Got error: ${e.message}`);
-      });
     });  
+  }
+
+  getRaiderIODataForPlayer(field) {
+    return new Promise((resolve, reject) => {
+      let apiPath = encodeURI(`https://raider.io/api/v1/characters/profile?region=${this.region}&realm=${this.realm}&name=${this.name}&fields=${field}`);      
+      utils.getDataFromUrl(apiPath)
+        .then(result => {
+          resolve(result);
+        }).catch(error => {
+          reject(error);
+        });
+    });
   }
 }

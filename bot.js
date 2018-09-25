@@ -223,6 +223,42 @@ bot.on('message', function (user, userID, channelID, message, evt) {
                 });
               });
             break;
+          // !raid-mythic-show
+          case command.raidMythicShow.name:
+          case command.raidMythicShow.alias:
+            raidMembersFunctions.raidStatus(serverId, 'show-mythic')
+              .then(result => {
+                if(!_.isEmpty(result)) {
+                  let msg = '';
+                  let manyMessages = false;
+                  if (result.length >= 1) {
+                    manyMessages = true;
+                  }
+                  for (let index = 0; index < result.length; index++) {
+                    if(manyMessages === true && index === 0) {
+                      msg = "<@!" + userID + "> " + result[index];
+                    } else {
+                      msg = result[index];
+                    }
+                    bot.sendMessage({
+                      to: channelID,
+                      message: msg
+                    });
+                  }
+                }
+              }); 
+            break;
+          // !raid-mythic-update
+          case command.raidMythicUpdate.name:
+          case command.raidMythicUpdate.alias:              
+            raidMembersFunctions.raidStatus(serverId, 'update-mythic', bot, channelID)
+              .then(response => {
+                bot.sendMessage({
+                  to: channelID,
+                  message: '<@!' + userID + '> ' + response.message
+                });
+              }); 
+            break;
         }
       }
     }
