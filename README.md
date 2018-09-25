@@ -62,7 +62,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
   * [x] Update Class and Role from Armory
   * [ ] Add roster's members with a specific rank (like Guild Master or Roster)
   * [ ] Add data about gems and enchants for roster's members or a specific player  
-  * [ ] Add chart to see Raider.IO score, and each better key down for a character
+  * [x] Add chart to see Raider.IO score, and each better key down for a character
 * Guide
   * [ ] Found on Wowhead, Icy Veins or other site a guide for class or profession
 * Improvement
