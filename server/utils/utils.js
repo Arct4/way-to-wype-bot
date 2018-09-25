@@ -100,7 +100,7 @@ module.exports = {
         let error;
   
         if (statusCode !== 200) {
-          error = new Error('Request Failed.\n' + `Status Code: ${statusCode} for path ${apiPath}`);
+          error = new Error('Request Failed.\n' + `Status Code: ${statusCode} for path ${urlPath}`);
         } else if (!/^application\/json/.test(contentType)) {
           error = new Error('Invalid content-type.\n' + `Expected application/json but received ${contentType}`);
         }
