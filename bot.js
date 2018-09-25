@@ -227,11 +227,11 @@ bot.on('message', function (user, userID, channelID, message, evt) {
           case command.raidMythicShow.name:
           case command.raidMythicShow.alias:
             raidMembersFunctions.raidStatus(serverId, 'show-mythic')
-              .then(result => {
+              .then(result => {                
                 if(!_.isEmpty(result)) {
                   let msg = '';
                   let manyMessages = false;
-                  if (result.length >= 1) {
+                  if (result.length > 1) {
                     manyMessages = true;
                   }
                   for (let index = 0; index < result.length; index++) {

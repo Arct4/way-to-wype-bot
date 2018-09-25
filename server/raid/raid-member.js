@@ -486,7 +486,7 @@ let checkRaiderIoForRoster = function (serverId, bot, channelID) {
           
           _.set(response, 'channelId', channelID);
           _.set(response, 'messageId', res.id);
-          _.set(response, 'message', 'La mise à jour du roster a été effectuée. Utilisez la commande `raid-mythic-show` ou `iou` pour le voir.');
+          _.set(response, 'message', 'La mise à jour du roster a été effectuée. Utilisez la commande `raid-mythic-show` ou `ios` pour le voir.');
 
           files.forEach(function (file) {          
             let fullPath = path + file;
