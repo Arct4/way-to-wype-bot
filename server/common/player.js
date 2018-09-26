@@ -23,6 +23,7 @@ module.exports = class Player {
     this.enchant.ring2 = 'Non';
     this.lastUpdate = 0;
     this.mythic = [];
+    this.mythic_scores = {};
   }
 
   set setProperties(data) {
@@ -39,6 +40,7 @@ module.exports = class Player {
     this.enchant.ring2 = _.get(data, 'enchant.ring2') || 'Non';
     this.lastUpdate = data.lastUpdate || 0;
     this.mythic = data.mythic || [];
+    this.mythic_scores = data.mythic_scores || {};
   }
 
   getDataForPlayer(field) {

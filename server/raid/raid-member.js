@@ -13,7 +13,7 @@ logger.level = config.loggerLevel;
 
 const STRING_SEPARATOR = '|';
 const STRING_MAX_LENGTH = 106;
-const STRING_MYTHIC_MAX_LENGTH = 79;
+const STRING_MYTHIC_MAX_LENGTH = 108;
 const TEXT_MESSAGE_LIMIT = 2000;
 const listDungeons = ['AD', 'UNDR', 'ML', 'TD', 'FH', 'KR', 'TOS', 'SOTS', 'WM', 'SIEGE'];
 
@@ -503,7 +503,7 @@ let checkRaiderIoForRoster = function (serverId, bot, channelID) {
             });
 
             // Update items datas
-            player.getRaiderIODataForPlayer('mythic_plus_best_runs:all')
+            player.getRaiderIODataForPlayer('mythic_plus_scores,mythic_plus_best_runs:all')
               .then(response => {
                 setPropertyForPlayerFromRaiderIo(fullPath, player, response);
                 resolve(`Le joueur ${player.name} a été mis à jour.`);              
@@ -536,15 +536,23 @@ let setPropertyForPlayerFromRaiderIo = function (path, player, data) {
 
     if (!_.isEmpty(dungeonArray)) {
       _.set(player, 'mythic', dungeonArray);
-
-      // update json file for player
-      fs.writeFileSync(path, JSON.stringify(player, null, 2), function (err) {
-        if (err) {
-          logger.error(err);
-          throw err;
-        }
-      });
     }
+
+    let dungeonsScore = _.get(data, 'mythic_plus_scores');
+    if(!_.isEmpty(dungeonsScore)) {
+      _.set(player, 'mythic_scores.all', _.get(dungeonsScore, 'all', 0));
+      _.set(player, 'mythic_scores.dps', _.get(dungeonsScore, 'dps', 0));
+      _.set(player, 'mythic_scores.healer', _.get(dungeonsScore, 'healer', 0));
+      _.set(player, 'mythic_scores.tank', _.get(dungeonsScore, 'tank', 0));
+    }
+
+    // update json file for player
+    fs.writeFileSync(path, JSON.stringify(player, null, 2), function (err) {
+      if (err) {
+        logger.error(err);
+        throw err;
+      }
+    });
   }
 }
 
@@ -558,6 +566,10 @@ let showMythic = function (serverId) {
     let header = '```css\n' 
       + STRING_SEPARATOR + _.pad('', STRING_MYTHIC_MAX_LENGTH, '-') + STRING_SEPARATOR + '\n'  
       + STRING_SEPARATOR + ' ' + _.pad('Personnage', 16) 
+      + STRING_SEPARATOR + _.pad('All', 6)
+      + STRING_SEPARATOR + _.pad('Dps', 6)
+      + STRING_SEPARATOR + _.pad('Healer', 6)
+      + STRING_SEPARATOR + _.pad('Tank', 7)
       + STRING_SEPARATOR + _.pad('AD', 5) 
       + STRING_SEPARATOR + _.pad('UNDR', 5) 
       + STRING_SEPARATOR + _.pad('ML', 5)
@@ -591,7 +603,11 @@ let showMythic = function (serverId) {
                 _.forEach(playersList, function (player) {
                   let mythicData = _.get(player, 'mythic');
                   if(!_.isEmpty(mythicData)) {
-                    message = STRING_SEPARATOR + ' ' + _.padEnd(_.get(player, 'name', ''), 16) 
+                    message = STRING_SEPARATOR + ' ' + _.padEnd(_.get(player, 'name', ''), 16)
+                      + STRING_SEPARATOR + _.pad(_.get(player, 'mythic_scores.all', 0), 6)
+                      + STRING_SEPARATOR + _.pad(_.get(player, 'mythic_scores.dps', 0), 6)
+                      + STRING_SEPARATOR + _.pad(_.get(player, 'mythic_scores.healer', 0), 6)
+                      + STRING_SEPARATOR + _.pad(_.get(player, 'mythic_scores.tank', 0), 7)
                       + STRING_SEPARATOR + _.pad(getLevelForDungeon(mythicData, 0), 5) 
                       + STRING_SEPARATOR + _.pad(getLevelForDungeon(mythicData, 1), 5) 
                       + STRING_SEPARATOR + _.pad(getLevelForDungeon(mythicData, 2), 5)
