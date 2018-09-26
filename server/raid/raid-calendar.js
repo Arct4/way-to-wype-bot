@@ -195,7 +195,7 @@ let formattedEvent = function (events, period) {
         fieldsDate.push({ name: 'Fin', value: moment(_.get(events, '0.end')).format('HH:mm').toString(), inline: true });
         fieldsDate.push({ name: 'Groupage', value: moment(_.get(events, '0.group')).format('HH:mm').toString(), });
       }
-      fieldsDate.push({ name: 'Rappel', value: '_Pensez à répondre à l\'invitation en jeu si cela n\'est pas déjà fait_' });
+      fieldsDate.push({ name: 'Rappel', value: '_Pensez à répondre à l\'invitation en jeu, avant 20h, si cela n\'est pas déjà fait_' });
 
       let embedMessage = {};      
       _.set(embedMessage, 'color', 0x93c502);
