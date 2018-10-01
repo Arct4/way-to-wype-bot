@@ -659,7 +659,7 @@ let getLevelForDungeon = function (mythicData, index) {
   });
 
   if(!_.isEmpty(dungeon)) {
-    result = _.padEnd(_.get(dungeon, 'mythic_level', 0), _.get(dungeon, 'num_keystone_upgrades',0), '*');
+    result = _.get(dungeon, 'mythic_level', 0) + '*'.repeat(_.get(dungeon, 'num_keystone_upgrades', 0));
   }
 
   return result;
