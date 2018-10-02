@@ -215,7 +215,7 @@ bot.on('message', function (user, userID, channelID, message, evt) {
             break;
           case command.calendarGenerateMonthEvents.name:
           case command.calendarGenerateMonthEvents.alias:
-            raidCalendarFunctions.generateEvents(args)
+            raidCalendarFunctions.generateEvents(serverId, args)
               .then(response => {
                 bot.sendMessage({
                   to: channelID,

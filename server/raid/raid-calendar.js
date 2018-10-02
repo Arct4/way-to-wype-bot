@@ -82,7 +82,7 @@ module.exports = {
     });
   },
 
-  generateEvents: function (args) {
+  generateEvents: function (serverId, args) {
     return new Promise((resolve, reject) => {
       let type = _.toLower(args[0]);
       let month = args[1];
@@ -94,7 +94,7 @@ module.exports = {
         });
 
         if(!_.isEmpty(enumType)) {
-          generateEventForMonth(enumType, month)
+          generateEventForMonth(serverId, enumType, month)
             .then(result => {
               resolve(`Events created for month ${month}`);
             })
@@ -214,10 +214,10 @@ let formattedEvent = function (events, period) {
   });
 }
 
-let generateEventForMonth = function (eventType, month) {
+let generateEventForMonth = function (serverId, eventType, month) {
   return new Promise((resolve, reject) => {
     let year = moment().year();
-    let path = config.dataFolder + config.calendarFolder + '/' + year + '/' ;
+    let path = config.dataFolder + config.calendarFolder + '/' + serverId + '/' + year + '/' ;
     let fullPath = path + _.lowerFirst(month) + '.json';
     let allEvents = [];
 
@@ -226,83 +226,92 @@ let generateEventForMonth = function (eventType, month) {
       allEvents = JSON.parse(fs.readFileSync(fullPath));      
     }
 
-    // New month or new data for events, creating events and save to a new file
-    // Get default value for eventType
-    // Need to get default days for type (Dungeon, Raid or HF)
-    // For each default days, generate a event object with title, type, difficulty, group, begin and end informations
-    let type = _.toLower(eventType.name);
-    let defaultDays = _.get(config, 'defaultEvents.' + type + '.eventDay'); // Array of day ids
-    let defaultDifficulty = _.find(enumEventDifficulty.eventDifficulty, function(idDifficulty) {
-      return _.get(config, 'defaultEvents.' + type + '.eventDifficulty') === idDifficulty.id;
-    });
-    let defaultGroupHour = _.get(config, 'defaultEvents.' + type + '.hourGroup');
-    let defaultBeginHour = _.get(config, 'defaultEvents.' + type + '.hourBegin');
-    let defaultEndHour = _.get(config, 'defaultEvents.' + type + '.hourEnd');
-    let iconUrl = _.get(config, 'defaultEvents.' + type + '.icon_url', '');
+    let configServerPath = config.dataFolder + config.configFolder + '/' + serverId + '/' + config.configFile;
+    let rawdata;
+    let configServerData;
 
-    // Need to get all days from defaultDays
-    let allDays = [];
-    _.forEach(defaultDays, function(day) {
-      allDays.push(utils.getDaysForMonth(moment().month(month).day(day).toDate()));
-    });
+    if(fs.existsSync(configServerPath)) {
+      rawdata = fs.readFileSync(configServerPath);
+      configServerData = JSON.parse(rawdata);
+    
+      // New month or new data for events, creating events and save to a new file
+      // Get default value for eventType
+      // Need to get default days for type (Dungeon, Raid or HF)
+      // For each default days, generate a event object with title, type, difficulty, group, begin and end informations
+      let type = _.toLower(eventType.name);
+      let defaultDays = _.get(configServerData, 'defaultEvents.' + type + '.eventDay'); // Array of day ids
+      let defaultDifficulty = _.find(enumEventDifficulty.eventDifficulty, function(idDifficulty) {
+        return _.get(configServerData, 'defaultEvents.' + type + '.eventDifficulty') === idDifficulty.id;
+      });
+      let defaultGroupHour = _.get(configServerData, 'defaultEvents.' + type + '.hourGroup');
+      let defaultBeginHour = _.get(configServerData, 'defaultEvents.' + type + '.hourBegin');
+      let defaultEndHour = _.get(configServerData, 'defaultEvents.' + type + '.hourEnd');
+      let iconUrl = _.get(configServerData, 'defaultEvents.' + type + '.icon_url', '');
 
-    if(!_.isEmpty(allDays)) {
-      _.forEach(allDays, function (days) {      
-        _.forEach(days, function (day) {
-          // Get date from current day
-          let momentDay = moment(day);
-
-          // Create an event for each day in allDays array
-          let eventCalendar = new Event();
-          _.set(eventCalendar, 'title', eventType.name + ' ' + defaultDifficulty.name + ' (' + defaultDifficulty.alias + ')');              
-          _.set(eventCalendar, 'eventDay', _.upperFirst(momentDay.format('dddd')));
-          _.set(eventCalendar, 'eventDifficulty', defaultDifficulty.id);
-          _.set(eventCalendar, 'eventType', eventType);
-          _.set(eventCalendar, 'icon_url', iconUrl);
-
-          _.set(eventCalendar, 'begin', moment(day).set({
-            hour: moment(defaultBeginHour, 'HH:mm').get('hour'),
-            minute: moment(defaultBeginHour, 'HH:mm').get('minute'),
-            second: 0,
-            millisecond: 0
-          }).valueOf());
-
-          _.set(eventCalendar, 'end', moment(day).set({
-            hour: moment(defaultEndHour, 'HH:mm').get('hour'),
-            minute: moment(defaultEndHour, 'HH:mm').get('minute'),
-            second: 0,
-            millisecond: 0
-          }).valueOf());
-
-          _.set(eventCalendar, 'group', moment(day).set({
-            hour: moment(defaultGroupHour, 'HH:mm').get('hour'),
-            minute: moment(defaultGroupHour, 'HH:mm').get('minute'),
-            second: 0,
-            millisecond: 0
-          }).valueOf());
-
-          // Add events to allEvents list if not exist
-          let existEvent = _.find(allEvents, function (event) {
-            return ((event.name === eventCalendar.name) && (event.begin === eventCalendar.begin) 
-                    && (event.end === eventCalendar.end) && (event.group == eventCalendar.group));
-          });
-          if(!existEvent) {
-            allEvents.push(eventCalendar);
-          }
-        });
+      // Need to get all days from defaultDays
+      let allDays = [];
+      _.forEach(defaultDays, function(day) {
+        allDays.push(utils.getDaysForMonth(moment().month(month).day(day).toDate()));
       });
 
-      if(!_.isEmpty(allEvents)) {
-        // update json file for month
-        fs.writeFileSync(fullPath, JSON.stringify(allEvents, null, 2), function (err) {
-          if (err) {
-            logger.error(err);
-            reject(err);
-          }
-        });
-      }
+      if(!_.isEmpty(allDays)) {
+        _.forEach(allDays, function (days) {      
+          _.forEach(days, function (day) {
+            // Get date from current day
+            let momentDay = moment(day);
 
-      resolve('Events created');
+            // Create an event for each day in allDays array
+            let eventCalendar = new Event();
+            _.set(eventCalendar, 'title', eventType.name + ' ' + defaultDifficulty.name + ' (' + defaultDifficulty.alias + ')');              
+            _.set(eventCalendar, 'eventDay', _.upperFirst(momentDay.format('dddd')));
+            _.set(eventCalendar, 'eventDifficulty', defaultDifficulty.id);
+            _.set(eventCalendar, 'eventType', eventType);
+            _.set(eventCalendar, 'icon_url', iconUrl);
+
+            _.set(eventCalendar, 'begin', moment(day).set({
+              hour: moment(defaultBeginHour, 'HH:mm').get('hour'),
+              minute: moment(defaultBeginHour, 'HH:mm').get('minute'),
+              second: 0,
+              millisecond: 0
+            }).valueOf());
+
+            _.set(eventCalendar, 'end', moment(day).set({
+              hour: moment(defaultEndHour, 'HH:mm').get('hour'),
+              minute: moment(defaultEndHour, 'HH:mm').get('minute'),
+              second: 0,
+              millisecond: 0
+            }).valueOf());
+
+            _.set(eventCalendar, 'group', moment(day).set({
+              hour: moment(defaultGroupHour, 'HH:mm').get('hour'),
+              minute: moment(defaultGroupHour, 'HH:mm').get('minute'),
+              second: 0,
+              millisecond: 0
+            }).valueOf());
+
+            // Add events to allEvents list if not exist
+            let existEvent = _.find(allEvents, function (event) {
+              return ((event.name === eventCalendar.name) && (event.begin === eventCalendar.begin) 
+                      && (event.end === eventCalendar.end) && (event.group == eventCalendar.group));
+            });
+            if(!existEvent) {
+              allEvents.push(eventCalendar);
+            }
+          });
+        });
+
+        if(!_.isEmpty(allEvents)) {
+          // update json file for month
+          fs.writeFileSync(fullPath, JSON.stringify(allEvents, null, 2), function (err) {
+            if (err) {
+              logger.error(err);
+              reject(err);
+            }
+          });
+        }
+
+        resolve('Events created');
+      }
     }
   });
 }
